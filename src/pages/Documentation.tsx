@@ -42,50 +42,41 @@ const Documentation = () => {
       description: "Flags workflows with potential for excessive runtime.",
       details: "Detects loops with high iteration counts or long timeouts that could cause performance issues.",
     },
-  ];
-
-  const plannedRules = [
     {
       name: "alert_log_enforcement",
       severity: "should",
       description: "Ensures critical paths include logging or alerting steps.",
       details: "For example, a failed payment processing branch should trigger an alert for monitoring.",
-      status: "planned",
     },
     {
       name: "unused_data",
       severity: "nit",
       description: "Detects when node output data is not consumed by subsequent nodes.",
       details: "Identifies unnecessary data processing that could be optimized or removed.",
-      status: "planned",
     },
     {
       name: "config_literals",
       severity: "should",
       description: "Flags hardcoded literals (URLs, environment tags, tenant IDs) that should come from configuration.",
       details: "Promotes externalized configuration and prevents hardcoded environment-specific values.",
-      status: "planned",
     },
     {
       name: "naming_convention",
       severity: "nit",
       description: "Enforces consistent and descriptive naming for nodes.",
       details: "Improves workflow readability and maintainability (e.g., 'Fetch Customer Data from CRM' vs 'HTTP Request').",
-      status: "planned",
     },
     {
       name: "deprecated_nodes",
       severity: "should",
       description: "Warns about deprecated node types and suggests alternatives.",
       details: "Helps maintain workflows using current, supported node implementations.",
-      status: "planned",
     },
     {
       name: "unhandled_error_path",
       severity: "must",
       description: "Ensures nodes with error outputs have connected error handling branches.",
       details: "Prevents silent failures by requiring explicit error path handling.",
-      status: "planned",
     },
   ];
 
@@ -251,8 +242,8 @@ rules:
             <TabsContent value="rules" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Implemented Rules</CardTitle>
-                  <CardDescription>Currently active rules in production</CardDescription>
+                  <CardTitle>Available Rules</CardTitle>
+                  <CardDescription>All {implementedRules.length} production-ready linting rules</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
@@ -260,35 +251,9 @@ rules:
                       <div key={rule.name} className="border-b border-border pb-6 last:border-0 last:pb-0">
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="text-lg font-mono font-semibold">{rule.name}</h3>
-                          <Badge variant={rule.severity === "must" ? "destructive" : "secondary"}>
+                          <Badge variant={rule.severity === "must" ? "destructive" : rule.severity === "should" ? "secondary" : "outline"}>
                             {rule.severity}
                           </Badge>
-                        </div>
-                        <p className="text-muted-foreground mb-2">{rule.description}</p>
-                        <p className="text-sm text-muted-foreground italic">{rule.details}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Planned Rules</CardTitle>
-                  <CardDescription>Rules in development for future releases</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {plannedRules.map((rule) => (
-                      <div key={rule.name} className="border-b border-border pb-6 last:border-0 last:pb-0">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-lg font-mono font-semibold">{rule.name}</h3>
-                          <div className="flex gap-2">
-                            <Badge variant="outline">Planned</Badge>
-                            <Badge variant={rule.severity === "must" ? "destructive" : rule.severity === "should" ? "secondary" : "outline"}>
-                              {rule.severity}
-                            </Badge>
-                          </div>
                         </div>
                         <p className="text-muted-foreground mb-2">{rule.description}</p>
                         <p className="text-sm text-muted-foreground italic">{rule.details}</p>
