@@ -29,7 +29,7 @@ const Support = () => {
     try {
       // Submit to Cloudflare Workers endpoint
       const response = await fetch(
-        import.meta.env.VITE_SUPPORT_ENDPOINT || "https://support.flowlint.dev/submit",
+        import.meta.env.VITE_SUPPORT_ENDPOINT || "https://flowlint-support.mholy1983.workers.dev/",
         {
           method: "POST",
           headers: {
