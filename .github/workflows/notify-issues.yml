@@ -1,0 +1,80 @@
+name: Issue Notifications
+
+on:
+  issues:
+    types: [opened, closed, labeled]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Send email notification for new issue
+        if: github.event.action == 'opened'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.ALERT_EMAIL_USER }}
+          password: ${{ secrets.ALERT_EMAIL_PASSWORD }}
+          subject: "[FlowLint Web] New Issue: ${{ github.event.issue.title }}"
+          to: ${{ secrets.ALERT_EMAIL_RECIPIENT }}
+          from: GitHub Notifications
+          body: |
+            A new issue has been opened in ${{ github.repository }}
+
+            Title: ${{ github.event.issue.title }}
+            Number: #${{ github.event.issue.number }}
+            Author: @${{ github.event.issue.user.login }}
+            URL: ${{ github.event.issue.html_url }}
+
+            Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}
+
+            ---
+            ${{ github.event.issue.body }}
+
+      - name: Send email notification for closed issue
+        if: github.event.action == 'closed'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.ALERT_EMAIL_USER }}
+          password: ${{ secrets.ALERT_EMAIL_PASSWORD }}
+          subject: "[FlowLint Web] Issue Closed: ${{ github.event.issue.title }}"
+          to: ${{ secrets.ALERT_EMAIL_RECIPIENT }}
+          from: GitHub Notifications
+          body: |
+            An issue has been closed in ${{ github.repository }}
+
+            Title: ${{ github.event.issue.title }}
+            Number: #${{ github.event.issue.number }}
+            Closed by: @${{ github.event.sender.login }}
+            URL: ${{ github.event.issue.html_url }}
+
+            ---
+            ${{ github.event.issue.body }}
+
+      - name: Send email notification for labeled issue
+        if: github.event.action == 'labeled' && contains(fromJSON('["bug", "enhancement", "help wanted"]'), github.event.label.name)
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.ALERT_EMAIL_USER }}
+          password: ${{ secrets.ALERT_EMAIL_PASSWORD }}
+          subject: "[FlowLint Web] Issue Labeled (${{ github.event.label.name }}): ${{ github.event.issue.title }}"
+          to: ${{ secrets.ALERT_EMAIL_RECIPIENT }}
+          from: GitHub Notifications
+          body: |
+            An issue has been labeled in ${{ github.repository }}
+
+            Title: ${{ github.event.issue.title }}
+            Number: #${{ github.event.issue.number }}
+            Label: ${{ github.event.label.name }}
+            URL: ${{ github.event.issue.html_url }}
+
+            ---
+            ${{ github.event.issue.body }}
