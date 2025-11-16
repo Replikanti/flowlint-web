@@ -1,5 +1,5 @@
 name = "flowlint-support"
-main = "workers/support.ts"
+main = "workers/support.js"
 compatibility_date = "2025-11-16"
 
 # Environment configuration
