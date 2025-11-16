@@ -10,15 +10,15 @@
 
 // Repository mapping
 const REPO_MAP = {
-  'flowlint': {
+  'web': {
     owner: 'Replikanti',
     repo: 'flowlint-web'
   },
-  'api': {
+  'app': {
     owner: 'Replikanti',
-    repo: 'flowlint'
+    repo: 'flowlint-app'
   },
-  'github-app': {
+  'rules': {
     owner: 'Replikanti',
     repo: 'flowlint'
   }

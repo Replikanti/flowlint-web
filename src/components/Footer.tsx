@@ -32,13 +32,13 @@ const Footer = () => {
               Automated static analysis for n8n workflows
             </p>
             <a
-              href="https://github.com/Replikanti/flowlint"
+              href="https://github.com/apps/flowlint"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <Github className="h-5 w-5 mr-2" />
-              GitHub
+              Install App
             </a>
           </div>
 
