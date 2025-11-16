@@ -18,7 +18,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/flowlint-web">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/support" element={<Support />} />

@@ -1,73 +1,86 @@
-# Welcome to your Lovable project
+# FlowLint Web
 
-## Project info
+Marketing and documentation website for FlowLint - a GitHub App that performs automated static analysis on n8n workflow files.
 
-**URL**: https://lovable.dev/projects/6d1e0db7-dc8d-4d7f-8464-c559f5c4e739
+## Deployment
 
-## How can I edit this code?
+This site is automatically deployed to GitHub Pages via GitHub Actions.
 
-There are several ways of editing your application.
+**Live URL**: https://replikanti.github.io/flowlint-web/
 
-**Use Lovable**
+### Automatic Deployment
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6d1e0db7-dc8d-4d7f-8464-c559f5c4e739) and start prompting.
+Every push to the `main` branch triggers an automatic build and deployment via GitHub Actions (`.github/workflows/deploy.yml`).
 
-Changes made via Lovable will be committed automatically to this repo.
+### Manual Deployment
 
-**Use your preferred IDE**
+You can also trigger a manual deployment:
+1. Go to Actions tab in GitHub
+2. Select "Deploy to GitHub Pages" workflow
+3. Click "Run workflow"
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Development
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js 22+ and npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+
+### Local Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server (http://localhost:8080)
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+### Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+flowlint-web/
+├── src/
+│   ├── pages/          # Page components (Home, Documentation, Support, etc.)
+│   ├── components/     # Reusable UI components
+│   └── App.tsx         # Main app with routing
+├── public/             # Static assets
+│   ├── .nojekyll       # Disable Jekyll processing on GitHub Pages
+│   └── 404.html        # SPA fallback for client-side routing
+└── .github/
+    └── workflows/
+        └── deploy.yml  # GitHub Pages deployment workflow
+```
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## Technologies
 
 This project is built with:
 
-- Vite
+- Vite (build tool)
 - TypeScript
-- React
-- shadcn-ui
+- React 18
+- React Router (client-side routing)
+- shadcn-ui (component library)
 - Tailwind CSS
+- Radix UI primitives
 
-## How can I deploy this project?
+## GitHub Pages Configuration
 
-Simply open [Lovable](https://lovable.dev/projects/6d1e0db7-dc8d-4d7f-8464-c559f5c4e739) and click on Share -> Publish.
+The site is configured for GitHub Pages subdirectory hosting:
 
-## Can I connect a custom domain to my Lovable project?
+- Base path: `/flowlint-web/`
+- Router basename: `/flowlint-web`
+- SPA fallback via 404.html redirect strategy
+- No Jekyll processing (.nojekyll file)
 
-Yes, you can!
+## Support Form
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+The support form uses GitHub Issues for submission:
+- No backend API required
+- Pre-fills GitHub issue template with form data
+- Opens GitHub in new tab for user to complete submission

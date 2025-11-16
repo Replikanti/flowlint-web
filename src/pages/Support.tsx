@@ -22,45 +22,54 @@ const Support = () => {
     repository: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // TODO: Replace with your Cloudflare Worker endpoint
-      const response = await fetch("https://api.flowlint.dev/support", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    // Create GitHub issue URL with pre-filled template
+    const issueTypeLabels: Record<string, string> = {
+      bug: "bug",
+      feature: "enhancement",
+      question: "question",
+      installation: "documentation",
+      configuration: "configuration",
+      "false-positive": "false-positive",
+      performance: "performance",
+      other: "question",
+    };
 
-      if (response.ok) {
-        toast({
-          title: "Support request submitted",
-          description: "We'll review your issue and respond as soon as possible.",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          issueType: "",
-          title: "",
-          description: "",
-          repository: "",
-        });
-      } else {
-        throw new Error("Failed to submit");
-      }
-    } catch (error) {
-      toast({
-        title: "Submission failed",
-        description: "Please try again or contact us directly on GitHub.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    const label = issueTypeLabels[formData.issueType] || "question";
+    const issueBody = `**Name:** ${formData.name}
+**Email:** ${formData.email}
+**Repository:** ${formData.repository || "N/A"}
+
+## Description
+
+${formData.description}`;
+
+    const githubIssueUrl = `https://github.com/Replikanti/flowlint/issues/new?title=${encodeURIComponent(
+      formData.title
+    )}&body=${encodeURIComponent(issueBody)}&labels=${encodeURIComponent(label)}`;
+
+    // Open GitHub issue creation page in new tab
+    window.open(githubIssueUrl, "_blank");
+
+    toast({
+      title: "Opening GitHub Issue",
+      description: "We've opened GitHub to create your support request. Please complete the submission there.",
+    });
+
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      issueType: "",
+      title: "",
+      description: "",
+      repository: "",
+    });
+
+    setIsSubmitting(false);
   };
 
   return (
