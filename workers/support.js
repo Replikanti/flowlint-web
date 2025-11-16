@@ -18,6 +18,10 @@ const REPO_MAP = {
     owner: 'Replikanti',
     repo: 'flowlint-app'
   },
+  'api': {
+    owner: 'Replikanti',
+    repo: 'flowlint-app'
+  },
   'rules': {
     owner: 'Replikanti',
     repo: 'flowlint'
