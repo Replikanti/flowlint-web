@@ -16,10 +16,10 @@ const Support = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    issueType: "",
+    project: "web",
+    type: "question",
     title: "",
     description: "",
-    repository: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,11 +38,10 @@ const Support = () => {
           body: JSON.stringify({
             name: formData.name,
             email: formData.email,
-            issueType: formData.issueType,
+            project: formData.project,
+            type: formData.type,
             title: formData.title,
             description: formData.description,
-            repository: formData.repository,
-            timestamp: new Date().toISOString(),
           }),
         }
       );
@@ -60,10 +59,10 @@ const Support = () => {
       setFormData({
         name: "",
         email: "",
-        issueType: "",
+        project: "web",
+        type: "question",
         title: "",
         description: "",
-        repository: "",
       });
     } catch (error) {
       console.error("Error submitting support request:", error);
@@ -124,40 +123,45 @@ const Support = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="issueType">Issue Type *</Label>
-                  <Select
-                    required
-                    value={formData.issueType}
-                    onValueChange={(value) => setFormData({ ...formData, issueType: value })}
-                  >
-                    <SelectTrigger id="issueType">
-                      <SelectValue placeholder="Select issue type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="bug">Bug Report</SelectItem>
-                      <SelectItem value="feature">Feature Request</SelectItem>
-                      <SelectItem value="question">Question</SelectItem>
-                      <SelectItem value="installation">Installation Help</SelectItem>
-                      <SelectItem value="configuration">Configuration Issue</SelectItem>
-                      <SelectItem value="false-positive">False Positive</SelectItem>
-                      <SelectItem value="performance">Performance Issue</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="project">Project *</Label>
+                    <Select
+                      required
+                      value={formData.project}
+                      onValueChange={(value) => setFormData({ ...formData, project: value })}
+                    >
+                      <SelectTrigger id="project">
+                        <SelectValue placeholder="Select project" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="web">FlowLint Web (Website)</SelectItem>
+                        <SelectItem value="app">FlowLint App (GitHub App & API)</SelectItem>
+                        <SelectItem value="api">FlowLint API</SelectItem>
+                        <SelectItem value="rules">FlowLint Rules Engine</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="repository">Repository (optional)</Label>
-                  <Input
-                    id="repository"
-                    value={formData.repository}
-                    onChange={(e) => setFormData({ ...formData, repository: e.target.value })}
-                    placeholder="owner/repository"
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    If this relates to a specific repository, please provide the name
-                  </p>
+                  <div className="space-y-2">
+                    <Label htmlFor="type">Issue Type *</Label>
+                    <Select
+                      required
+                      value={formData.type}
+                      onValueChange={(value) => setFormData({ ...formData, type: value })}
+                    >
+                      <SelectTrigger id="type">
+                        <SelectValue placeholder="Select issue type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bug">Bug Report</SelectItem>
+                        <SelectItem value="feature">Feature Request</SelectItem>
+                        <SelectItem value="question">Question</SelectItem>
+                        <SelectItem value="help">Help Wanted</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
