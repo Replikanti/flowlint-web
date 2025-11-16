@@ -1,0 +1,30 @@
+name = "flowlint-support"
+main = "workers/support.ts"
+compatibility_date = "2025-11-16"
+
+# Environment configuration
+[env.production]
+routes = [
+  { pattern = "support.flowlint.dev/submit", zone_name = "flowlint.dev" }
+]
+vars = { SUPPORT_EMAIL = "support@flowlint.dev", ADMIN_EMAIL = "admin@flowlint.dev" }
+
+[env.staging]
+routes = [
+  { pattern = "staging-support.flowlint.dev/submit", zone_name = "flowlint.dev" }
+]
+vars = { SUPPORT_EMAIL = "dev@flowlint.dev", ADMIN_EMAIL = "admin@flowlint.dev" }
+
+# Secrets (set via `wrangler secret put`)
+# - SENDGRID_API_KEY: SendGrid API key for email sending
+# - D1 database binding for storing support requests (optional)
+
+# D1 Database (optional - for storing support requests)
+# [[d1_databases]]
+# binding = "SUPPORT_DB"
+# database_name = "flowlint-support"
+# database_id = "your-db-id"
+
+# Environment variables
+[vars]
+SUPPORT_EMAIL = "support@flowlint.dev"

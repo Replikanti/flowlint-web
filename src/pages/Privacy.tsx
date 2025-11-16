@@ -11,7 +11,7 @@ const Privacy = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
-            <p className="text-muted-foreground">Last updated: January 2025</p>
+            <p className="text-muted-foreground">Last updated: November 16, 2025</p>
           </div>
 
           <div className="space-y-6">
@@ -157,13 +157,9 @@ const Privacy = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  If you have questions about this Privacy Policy or our data practices, please contact us:
+                  If you have questions about this Privacy Policy or our data practices, please use our{" "}
+                  <a href="/support" className="text-primary hover:underline">support form</a> to reach out to us.
                 </p>
-                <ul className="list-none space-y-2">
-                  <li>Email: privacy@flowlint.dev</li>
-                  <li>Support: <a href="/support" className="text-primary hover:underline">flowlint.dev/support</a></li>
-                  <li>GitHub: <a href="https://github.com/Replikanti/flowlint" className="text-primary hover:underline">Replikanti/flowlint</a></li>
-                </ul>
               </CardContent>
             </Card>
           </div>

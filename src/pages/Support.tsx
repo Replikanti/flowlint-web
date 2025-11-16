@@ -22,54 +22,59 @@ const Support = () => {
     repository: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Create GitHub issue URL with pre-filled template
-    const issueTypeLabels: Record<string, string> = {
-      bug: "bug",
-      feature: "enhancement",
-      question: "question",
-      installation: "documentation",
-      configuration: "configuration",
-      "false-positive": "false-positive",
-      performance: "performance",
-      other: "question",
-    };
+    try {
+      // Submit to Cloudflare Workers endpoint
+      const response = await fetch(
+        import.meta.env.VITE_SUPPORT_ENDPOINT || "https://support.flowlint.dev/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            issueType: formData.issueType,
+            title: formData.title,
+            description: formData.description,
+            repository: formData.repository,
+            timestamp: new Date().toISOString(),
+          }),
+        }
+      );
 
-    const label = issueTypeLabels[formData.issueType] || "question";
-    const issueBody = `**Name:** ${formData.name}
-**Email:** ${formData.email}
-**Repository:** ${formData.repository || "N/A"}
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-## Description
+      toast({
+        title: "Request Submitted",
+        description: "Thank you! We've received your support request and will get back to you soon.",
+      });
 
-${formData.description}`;
-
-    const githubIssueUrl = `https://github.com/Replikanti/flowlint/issues/new?title=${encodeURIComponent(
-      formData.title
-    )}&body=${encodeURIComponent(issueBody)}&labels=${encodeURIComponent(label)}`;
-
-    // Open GitHub issue creation page in new tab
-    window.open(githubIssueUrl, "_blank");
-
-    toast({
-      title: "Opening GitHub Issue",
-      description: "We've opened GitHub to create your support request. Please complete the submission there.",
-    });
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      issueType: "",
-      title: "",
-      description: "",
-      repository: "",
-    });
-
-    setIsSubmitting(false);
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        issueType: "",
+        title: "",
+        description: "",
+        repository: "",
+      });
+    } catch (error) {
+      console.error("Error submitting support request:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit your request. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -194,15 +199,7 @@ ${formData.description}`;
 
           <div className="mt-8 text-center text-sm text-muted-foreground">
             <p>
-              You can also reach us directly on{" "}
-              <a
-                href="https://github.com/Replikanti/flowlint/issues"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                GitHub Issues
-              </a>
+              We typically respond to support requests within 24 hours.
             </p>
           </div>
         </div>
