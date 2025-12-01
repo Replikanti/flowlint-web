@@ -8,6 +8,7 @@ const Footer = () => {
       { name: "Documentation", href: "/doc" },
       { name: "Status", href: "/status" },
       { name: "GitHub App", href: "https://github.com/apps/flowlint" },
+      { name: "CLI", href: "/cli" },
     ],
     company: [
       { name: "About", href: "/" },
