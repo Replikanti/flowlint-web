@@ -27,9 +27,9 @@ const Cli = () => {
                 </a>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <a href="https://github.com/Replikanti/flowlint/tree/main/flowlint-app" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/Replikanti/flowlint-examples" target="_blank" rel="noopener noreferrer">
                   <Code2 className="w-4 h-4 mr-2" />
-                  View Source
+                  View Examples
                 </a>
               </Button>
             </div>
