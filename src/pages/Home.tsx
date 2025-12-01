@@ -59,7 +59,7 @@ const Home = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center space-y-8">
               <Badge variant="secondary" className="mb-4">
-                GitHub App for n8n Workflows
+                Automated Static Analysis for n8n Workflows
               </Badge>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
                 Automated Static Analysis
@@ -77,9 +77,12 @@ const Home = () => {
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="/doc">View Documentation</a>
+                  <a href="/cli">Try CLI</a>
                 </Button>
               </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                Both integrate seamlessly with your workflow
+              </p>
             </div>
           </div>
         </section>
