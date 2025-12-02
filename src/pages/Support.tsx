@@ -137,6 +137,7 @@ const Support = () => {
                       <SelectContent>
                         <SelectItem value="web">FlowLint Web (Website)</SelectItem>
                         <SelectItem value="app">FlowLint App (GitHub App & API)</SelectItem>
+                        <SelectItem value="cli">FlowLint CLI</SelectItem>
                         <SelectItem value="api">FlowLint API</SelectItem>
                         <SelectItem value="rules">FlowLint Rules Engine</SelectItem>
                       </SelectContent>
