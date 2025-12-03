@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Download, Code2, Terminal } from "lucide-react";
+import { Download, Code2, Terminal, FolderGit2 } from "lucide-react";
 
 const Cli = () => {
   return (
@@ -38,8 +38,8 @@ const Cli = () => {
           {/* Installation Card */}
           <Card className="mb-12">
             <CardHeader>
-              <CardTitle>Installation</CardTitle>
-              <CardDescription>Get started with the FlowLint CLI tool</CardDescription>
+              <CardTitle>Global Installation</CardTitle>
+              <CardDescription>Get started quickly with the FlowLint CLI tool globally</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
@@ -58,6 +58,73 @@ const Cli = () => {
                   <li>Node.js 22 or higher</li>
                   <li>npm, yarn, or pnpm</li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Project Setup (New Section) */}
+          <Card className="mb-12 border-blue-200 bg-blue-50/30">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FolderGit2 className="w-5 h-5 text-blue-600" />
+                Project Setup (Recommended)
+              </CardTitle>
+              <CardDescription>Integrate FlowLint into your project for consistent testing across your team</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-4 gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">Step 1</Badge>
+                    <h3 className="font-semibold">Initialize project</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3 min-h-[40px]">Create a new npm project in your repository.</p>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                    <pre>npm init</pre>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">Step 2</Badge>
+                    <h3 className="font-semibold">Set test command</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3 min-h-[40px]">When prompted, enter test command:</p>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+<pre>flowlint scan</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">Step 3</Badge>
+                    <h3 className="font-semibold">Install FlowLint</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3 min-h-[40px]">Install FlowLint as a dev dependency.</p>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                    <pre>npm i flowlint</pre>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-3">Using <code className="bg-slate-100 px-1 py-0.5 rounded">npm init -y</code> or an existing package? Ensure <code className="bg-slate-100 px-1 py-0.5 rounded">scripts.test</code> is set:</p>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto mt-2">
+                    <pre>{`"scripts": {
+  "test": "flowlint scan"
+}`}</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">Step 4</Badge>
+                    <h3 className="font-semibold">Run tests</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3 min-h-[40px]">Generate config, then execute the scanner via npm.</p>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto mb-2">
+                    <pre>flowlint init</pre>
+                  </div>
+                  <div className="bg-slate-900 text-slate-50 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                    <pre>npm run test</pre>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
