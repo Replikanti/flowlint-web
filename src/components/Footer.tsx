@@ -66,15 +66,41 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Automated static analysis for n8n workflows
             </p>
-            <a
-              href="https://github.com/apps/flowlint"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Github className="h-5 w-5 mr-2" />
-              Install App
-            </a>
+            <div className="space-y-3">
+              <a
+                href="https://github.com/apps/flowlint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Github className="h-5 w-5 mr-2" />
+                Install GitHub App
+              </a>
+              <div>
+                <a
+                  href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png"
+                    alt="Available in the Chrome Web Store"
+                    className="h-[40px] w-auto"
+                  />
+                </a>
+              </div>
+              <a
+                href="https://www.npmjs.com/package/flowlint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <svg className="h-5 w-5 mr-2" viewBox="0 0 780 250" fill="currentColor">
+                  <path d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z"/>
+                </svg>
+                Install CLI from npm
+              </a>
+            </div>
           </div>
 
           <div>
