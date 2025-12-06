@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertTriangle, ShieldCheck, Zap, Code2, GitPullRequest } from "lucide-react";
+import { CheckCircle2, AlertTriangle, ShieldCheck, Zap, Code2, GitPullRequest, Chrome } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -79,9 +79,15 @@ const Home = () => {
                 <Button size="lg" variant="outline" asChild>
                   <a href="/cli">Try CLI</a>
                 </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
+                    <Chrome className="mr-2 h-5 w-5" />
+                    Install Extension
+                  </a>
+                </Button>
               </div>
               <p className="text-sm text-muted-foreground mt-4">
-                Both integrate seamlessly with your workflow
+                Multiple options to fit your workflow
               </p>
             </div>
           </div>
@@ -116,6 +122,80 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Chrome Extension Section */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 to-primary/10">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
+                  <Chrome className="h-5 w-5" />
+                  <span className="text-sm font-semibold">Chrome Extension</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+                  Lint Your Workflows in Real-Time
+                </h2>
+                <p className="text-xl text-muted-foreground">
+                  Chrome Extension for n8n Editor
+                </p>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">Real-time Analysis</h3>
+                      <p className="text-muted-foreground">Get instant feedback as you build workflows</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">Inline Annotations</h3>
+                      <p className="text-muted-foreground">See issues highlighted directly in the editor</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">Offline Capable</h3>
+                      <p className="text-muted-foreground">Works completely in your browser, no external calls</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">Zero Configuration</h3>
+                      <p className="text-muted-foreground">Install and start linting immediately</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">Privacy-First</h3>
+                      <p className="text-muted-foreground">100% browser-based, your workflows never leave your machine</p>
+                    </div>
+                  </li>
+                </ul>
+                <div className="pt-4">
+                  <Button size="lg" asChild className="shadow-[var(--shadow-glow)]">
+                    <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
+                      <Chrome className="mr-2 h-5 w-5" />
+                      Install Chrome Extension
+                    </a>
+                  </Button>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="relative rounded-lg overflow-hidden border border-border shadow-[var(--shadow-xl)] bg-card">
+                  <img
+                    src="/placeholder.svg"
+                    alt="Chrome Extension Screenshot"
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* How It Works */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto max-w-6xl">
@@ -124,7 +204,7 @@ const Home = () => {
                 How It Works
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Seamless integration with your existing GitHub workflow
+                Choose your preferred integration method
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-8 relative">
@@ -135,9 +215,9 @@ const Home = () => {
                 <div className="h-16 w-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto shadow-[var(--shadow-glow)]">
                   1
                 </div>
-                <h3 className="text-xl font-semibold text-foreground">Install & Connect</h3>
+                <h3 className="text-xl font-semibold text-foreground">Choose Your Integration</h3>
                 <p className="text-muted-foreground">
-                  Install the FlowLint GitHub App on your repositories containing n8n workflows
+                  Install the GitHub App for PR reviews, CLI for local development, or Chrome Extension for real-time editor feedback
                 </p>
               </div>
 
@@ -147,7 +227,7 @@ const Home = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-foreground">Automatic Analysis</h3>
                 <p className="text-muted-foreground">
-                  FlowLint automatically reviews PRs, parsing workflow files and applying lint rules
+                  FlowLint parses your workflow files and applies configurable lint rules to detect security, performance, and reliability issues
                 </p>
               </div>
 
@@ -157,7 +237,7 @@ const Home = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-foreground">Get Feedback</h3>
                 <p className="text-muted-foreground">
-                  Review detailed check runs with inline annotations highlighting specific issues
+                  Review detailed findings with inline annotations, severity levels, and actionable recommendations
                 </p>
               </div>
             </div>
