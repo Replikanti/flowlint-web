@@ -24,9 +24,9 @@ const ChromeExtension = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">
                 <img
-                  src="/chrome-web-store-badge.svg"
+                  src="/chrome-web-store-badge-official.png"
                   alt="Available in the Chrome Web Store"
-                  className="h-[58px] w-[206px]"
+                  className="h-[58px] w-auto"
                 />
               </a>
               <Button size="lg" variant="outline" asChild>
@@ -144,19 +144,32 @@ const ChromeExtension = () => {
               <CardDescription>FlowLint integrates seamlessly with the n8n editor</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-muted rounded-lg p-8 flex items-center justify-center min-h-[300px]">
-                  <div className="text-center text-muted-foreground">
-                    <Chrome className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p>Extension panel showing workflow analysis</p>
-                  </div>
-                </div>
-                <div className="bg-muted rounded-lg p-8 flex items-center justify-center min-h-[300px]">
-                  <div className="text-center text-muted-foreground">
-                    <ShieldCheck className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p>Inline annotations in n8n editor</p>
-                  </div>
-                </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <img
+                  src="/chrome-ext-screenshot-1.png"
+                  alt="FlowLint Chrome Extension - Workflow Analysis"
+                  className="rounded-lg border border-border w-full h-auto"
+                />
+                <img
+                  src="/chrome-ext-screenshot-2.png"
+                  alt="FlowLint Chrome Extension - Finding Details"
+                  className="rounded-lg border border-border w-full h-auto"
+                />
+                <img
+                  src="/chrome-ext-screenshot-3.png"
+                  alt="FlowLint Chrome Extension - Inline Annotations"
+                  className="rounded-lg border border-border w-full h-auto"
+                />
+                <img
+                  src="/chrome-ext-screenshot-4.png"
+                  alt="FlowLint Chrome Extension - n8n Editor Integration"
+                  className="rounded-lg border border-border w-full h-auto"
+                />
+                <img
+                  src="/chrome-ext-screenshot-5.png"
+                  alt="FlowLint Chrome Extension - Real-time Feedback"
+                  className="rounded-lg border border-border w-full h-auto"
+                />
               </div>
             </CardContent>
           </Card>
@@ -209,9 +222,9 @@ const ChromeExtension = () => {
               <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <a href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">
                   <img
-                    src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png"
+                    src="/chrome-web-store-badge-official.png"
                     alt="Available in the Chrome Web Store"
-                    className="h-[58px] w-[206px]"
+                    className="h-[58px] w-auto"
                   />
                 </a>
                 <Button variant="outline" size="lg" asChild>
