@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Github } from "lucide-react";
+import { Github, Chrome } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 
 const Footer = () => {
@@ -9,6 +10,7 @@ const Footer = () => {
       { name: "Status", href: "/status" },
       { name: "GitHub App", href: "https://github.com/apps/flowlint" },
       { name: "CLI", href: "/cli" },
+      { name: "Chrome Extension", href: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" },
     ],
     company: [
       { name: "About", href: "/" },
@@ -22,6 +24,38 @@ const Footer = () => {
 
   return (
     <footer className="border-t border-border bg-muted/30">
+      {/* Chrome Extension CTA */}
+      <div className="border-b border-border bg-gradient-to-br from-primary/5 to-primary/10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
+              <Chrome className="h-5 w-5" />
+              <span className="text-sm font-semibold">Chrome Extension</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+              Real-time Linting in Your Browser
+            </h3>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Integrates directly into the n8n editor for instant feedback as you build. 100% browser-based, completely free, and respects your privacy.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+              <Button size="lg" asChild className="shadow-[var(--shadow-glow)]">
+                <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
+                  <Chrome className="mr-2 h-5 w-5" />
+                  Install Chrome Extension
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a href="https://github.com/apps/flowlint" target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-2 h-5 w-5" />
+                  Install GitHub App
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
