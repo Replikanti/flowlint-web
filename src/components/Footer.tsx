@@ -76,19 +76,15 @@ const Footer = () => {
                 <Github className="h-5 w-5 mr-2" />
                 Install GitHub App
               </a>
-              <div>
-                <a
-                  href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src="/chrome-web-store-badge-official.png"
-                    alt="Available in the Chrome Web Store"
-                    className="h-[58px] w-auto"
-                  />
-                </a>
-              </div>
+              <a
+                href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Chrome className="h-5 w-5 mr-2" />
+                Install Chrome Extension
+              </a>
               <a
                 href="https://www.npmjs.com/package/flowlint"
                 target="_blank"
