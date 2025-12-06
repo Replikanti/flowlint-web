@@ -8,6 +8,7 @@ const Header = () => {
   const navigation = [
     { name: "Documentation", href: "/doc" },
     { name: "CLI", href: "/cli" },
+    { name: "Chrome Extension", href: "/chrome-extension" },
     { name: "Status", href: "/status" },
     { name: "Support", href: "/support" },
   ];

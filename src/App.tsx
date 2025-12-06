@@ -8,6 +8,7 @@ import Support from "./pages/Support";
 import Status from "./pages/Status";
 import Documentation from "./pages/Documentation";
 import Cli from "./pages/Cli";
+import ChromeExtension from "./pages/ChromeExtension";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/status" element={<Status />} />
           <Route path="/doc" element={<Documentation />} />
           <Route path="/cli" element={<Cli />} />
+          <Route path="/chrome-extension" element={<ChromeExtension />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/tos" element={<Terms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
