@@ -24,7 +24,7 @@ const ChromeExtension = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">
                 <img
-                  src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png"
+                  src="/chrome-web-store-badge.svg"
                   alt="Available in the Chrome Web Store"
                   className="h-[58px] w-[206px]"
                 />

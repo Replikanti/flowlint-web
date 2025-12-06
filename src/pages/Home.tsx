@@ -186,7 +186,7 @@ const Home = () => {
               <div className="relative">
                 <div className="relative rounded-lg overflow-hidden border border-border shadow-[var(--shadow-xl)] bg-card">
                   <img
-                    src="/placeholder.svg"
+                    src="/chrome-ext-screenshot-4.png"
                     alt="Chrome Extension Screenshot"
                     className="w-full h-auto"
                   />

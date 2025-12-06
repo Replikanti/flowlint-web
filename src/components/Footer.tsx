@@ -83,7 +83,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                 >
                   <img
-                    src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png"
+                    src="/chrome-web-store-badge.svg"
                     alt="Available in the Chrome Web Store"
                     className="h-[40px] w-auto"
                   />
