@@ -165,11 +165,6 @@ const ChromeExtension = () => {
                   alt="FlowLint Chrome Extension - n8n Editor Integration"
                   className="rounded-lg border border-border w-full h-auto"
                 />
-                <img
-                  src="/chrome-ext-screenshot-5.png"
-                  alt="FlowLint Chrome Extension - Real-time Feedback"
-                  className="rounded-lg border border-border w-full h-auto"
-                />
               </div>
             </CardContent>
           </Card>
