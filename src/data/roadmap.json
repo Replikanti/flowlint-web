@@ -20,6 +20,10 @@
         {
           "title": "E2E Tests & Documentation",
           "description": "Complete end-to-end test suite, OpenAPI documentation, and distributed tracing implementation."
+        },
+        {
+          "title": "CLI Tool (Basic)",
+          "description": "Command-line interface with scan command, JSON output, config file support, and CI/CD integration via exit codes."
         }
       ]
     },
@@ -29,8 +33,8 @@
       "quarter": "Q4 2025",
       "items": [
         {
-          "title": "CLI Tool",
-          "description": "Command-line interface for local workflow linting and CI/CD integration with SARIF/JUnit output formats.",
+          "title": "Advanced Output Formats",
+          "description": "SARIF, JUnit XML, and GitHub Actions output formats for CLI tool to integrate with code scanning tools and CI/CD pipelines.",
           "estimatedCompletion": "Q4 2025"
         }
       ]
