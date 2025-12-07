@@ -1,105 +1,31 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Wrench, Calendar, Lightbulb, ExternalLink } from "lucide-react";
+import { CheckCircle2, Wrench, Calendar, Lightbulb } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import roadmapDataJson from "@/data/roadmap.json";
 
 interface RoadmapItem {
   title: string;
   description: string;
-  githubIssue?: string;
   estimatedCompletion?: string;
 }
 
 interface RoadmapSection {
   status: "shipped" | "in-progress" | "planned" | "backlog";
+  title?: string;
   quarter?: string;
   items: RoadmapItem[];
 }
 
+interface RoadmapData {
+  lastUpdated: string;
+  sections: RoadmapSection[];
+}
+
 const Roadmap = () => {
-  const roadmapData: RoadmapSection[] = [
-    {
-      status: "shipped",
-      items: [
-        {
-          title: "R1-R12 Lint Rules",
-          description: "Complete set of 12 production-ready linting rules for n8n workflows, covering rate limiting, error handling, secrets detection, and more.",
-        },
-        {
-          title: "GitHub App Integration",
-          description: "Full integration with GitHub Check Runs API for automated PR reviews with inline annotations.",
-        },
-        {
-          title: "Observability Stack",
-          description: "Comprehensive monitoring with Prometheus, Grafana, and Tempo for distributed tracing.",
-        },
-        {
-          title: "E2E Tests & Documentation",
-          description: "Complete end-to-end test suite, OpenAPI documentation, and distributed tracing implementation.",
-        },
-      ],
-    },
-    {
-      status: "in-progress",
-      quarter: "Q4 2025",
-      items: [
-        {
-          title: "CLI Tool",
-          description: "Command-line interface for local workflow linting and CI/CD integration.",
-          githubIssue: "https://github.com/Replikanti/flowlint-app/issues/14",
-          estimatedCompletion: "Q4 2025",
-        },
-      ],
-    },
-    {
-      status: "planned",
-      quarter: "Q1 2026",
-      items: [
-        {
-          title: "R13: Webhook Acknowledgment Pattern",
-          description: "Ensure webhooks acknowledge receipt before processing to prevent timeout issues.",
-          githubIssue: "https://github.com/Replikanti/flowlint-app/issues/135",
-        },
-        {
-          title: "R14: Retry-After Compliance",
-          description: "Validate proper handling of HTTP 429 (Too Many Requests) and Retry-After headers.",
-          githubIssue: "https://github.com/Replikanti/flowlint-app/issues/136",
-        },
-        {
-          title: "Suppression Mechanism",
-          description: "Allow developers to suppress specific findings with inline comments and configuration.",
-          githubIssue: "https://github.com/Replikanti/flowlint-app/issues/137",
-        },
-      ],
-    },
-    {
-      status: "backlog",
-      items: [
-        {
-          title: "R15: Two-Phase Commit Pattern",
-          description: "Detect and recommend two-phase commit patterns for distributed transactions.",
-        },
-        {
-          title: "R16: Schedule Concurrency Guards",
-          description: "Prevent concurrent execution of scheduled workflows when not intended.",
-        },
-        {
-          title: "R17: Environment Drift Detection",
-          description: "Identify configuration differences between development, staging, and production workflows.",
-        },
-        {
-          title: "Provider-Aware Retry Templates",
-          description: "Intelligent retry configuration suggestions based on API provider (Stripe, Twilio, etc.).",
-        },
-        {
-          title: "Plugin System",
-          description: "Extensible architecture allowing teams to write and share custom lint rules.",
-        },
-      ],
-    },
-  ];
+  const roadmapData: RoadmapSection[] = (roadmapDataJson as RoadmapData).sections;
 
   const getStatusConfig = (status: RoadmapSection["status"]) => {
     switch (status) {
@@ -156,7 +82,7 @@ const Roadmap = () => {
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               See what we're building, what's coming next, and help shape the future of FlowLint
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex justify-center items-center">
               <Button asChild size="lg">
                 <a
                   href="mailto:support@flowlint.dev?subject=Feature Request"
@@ -164,17 +90,6 @@ const Roadmap = () => {
                 >
                   <Lightbulb className="mr-2 h-5 w-5" />
                   Request a Rule
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href="https://github.com/Replikanti/flowlint-app/issues"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center"
-                >
-                  <ExternalLink className="mr-2 h-5 w-5" />
-                  View on GitHub
                 </a>
               </Button>
             </div>
@@ -225,22 +140,9 @@ const Roadmap = () => {
                         }`}
                       >
                         <CardHeader>
-                          <div className="flex items-start justify-between gap-2">
-                            <CardTitle className="text-lg leading-tight">
-                              {item.title}
-                            </CardTitle>
-                            {item.githubIssue && (
-                              <a
-                                href={item.githubIssue}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
-                                aria-label={`View ${item.title} on GitHub`}
-                              >
-                                <ExternalLink className="h-4 w-4" />
-                              </a>
-                            )}
-                          </div>
+                          <CardTitle className="text-lg leading-tight">
+                            {item.title}
+                          </CardTitle>
                           <CardDescription className="text-sm">
                             {item.description}
                           </CardDescription>
@@ -271,21 +173,12 @@ const Roadmap = () => {
                 We're always looking to expand FlowLint's capabilities. Share your suggestions with us!
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
+            <CardContent className="flex justify-center">
               <Button asChild size="lg" variant="default">
                 <a
                   href="mailto:support@flowlint.dev?subject=Feature Request&body=Rule name:%0D%0A%0D%0ADescription:%0D%0A%0D%0AUse case:%0D%0A%0D%0AExample workflow:"
                 >
                   Email Your Idea
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <a
-                  href="https://github.com/Replikanti/flowlint-app/issues/new?labels=enhancement&template=feature_request.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open GitHub Issue
                 </a>
               </Button>
             </CardContent>

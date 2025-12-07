@@ -1,0 +1,84 @@
+{
+  "lastUpdated": "2025-12-07",
+  "sections": [
+    {
+      "status": "shipped",
+      "title": "Shipped Features",
+      "items": [
+        {
+          "title": "R1-R12 Lint Rules",
+          "description": "Complete set of 12 production-ready linting rules for n8n workflows, covering rate limiting, error handling, secrets detection, and more."
+        },
+        {
+          "title": "GitHub App Integration",
+          "description": "Full integration with GitHub Check Runs API for automated PR reviews with inline annotations."
+        },
+        {
+          "title": "Observability Stack",
+          "description": "Comprehensive monitoring with Prometheus, Grafana, and Tempo for distributed tracing."
+        },
+        {
+          "title": "E2E Tests & Documentation",
+          "description": "Complete end-to-end test suite, OpenAPI documentation, and distributed tracing implementation."
+        }
+      ]
+    },
+    {
+      "status": "in-progress",
+      "title": "In Progress",
+      "quarter": "Q4 2025",
+      "items": [
+        {
+          "title": "CLI Tool",
+          "description": "Command-line interface for local workflow linting and CI/CD integration with SARIF/JUnit output formats.",
+          "estimatedCompletion": "Q4 2025"
+        }
+      ]
+    },
+    {
+      "status": "planned",
+      "title": "Coming Soon",
+      "quarter": "Q1 2026",
+      "items": [
+        {
+          "title": "R13: Webhook Acknowledgment Pattern",
+          "description": "Ensure webhooks acknowledge receipt before processing to prevent timeout issues and duplicate events."
+        },
+        {
+          "title": "R14: Retry-After Compliance",
+          "description": "Validate proper handling of HTTP 429 (Too Many Requests) and Retry-After headers with provider-aware retry templates."
+        },
+        {
+          "title": "Suppression Mechanism",
+          "description": "Allow developers to suppress specific findings with inline comments (flowlint-disable) similar to ESLint."
+        }
+      ]
+    },
+    {
+      "status": "backlog",
+      "title": "Future Ideas",
+      "items": [
+        {
+          "title": "R15: Two-Phase Commit Pattern",
+          "description": "Detect and recommend two-phase commit patterns for side effects (payments, emails) to prevent duplicate operations."
+        },
+        {
+          "title": "R16: Schedule Concurrency Guards",
+          "description": "Prevent concurrent execution of scheduled workflows when not intended, detecting overlapping cron jobs."
+        },
+        {
+          "title": "R17: Environment Drift Detection",
+          "description": "Identify configuration differences between development, staging, and production workflows."
+        },
+        {
+          "title": "Provider-Aware Retry Templates",
+          "description": "Intelligent retry configuration suggestions based on API provider rate limits (Stripe, Shopify, Notion, GitHub)."
+        },
+        {
+          "title": "Plugin System",
+          "description": "Extensible architecture allowing teams to write and share custom lint rules via npm packages."
+        }
+      ]
+    }
+  ]
+}
