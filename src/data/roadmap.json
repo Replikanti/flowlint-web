@@ -24,6 +24,10 @@
         {
           "title": "CLI Tool (Basic)",
           "description": "Command-line interface with scan command, JSON output, config file support, and CI/CD integration via exit codes."
+        },
+        {
+          "title": "Advanced Output Formats",
+          "description": "SARIF (GitHub Code Scanning), JUnit XML (Jenkins, GitLab CI, CircleCI, Azure Pipelines), and GitHub Actions output formats for CLI tool with comprehensive CI/CD integration examples."
         }
       ]
     },
@@ -31,13 +35,7 @@
       "status": "in-progress",
       "title": "In Progress",
       "quarter": "Q4 2025",
-      "items": [
-        {
-          "title": "Advanced Output Formats",
-          "description": "SARIF, JUnit XML, and GitHub Actions output formats for CLI tool to integrate with code scanning tools and CI/CD pipelines.",
-          "estimatedCompletion": "Q4 2025"
-        }
-      ]
+      "items": []
     },
     {
       "status": "planned",
