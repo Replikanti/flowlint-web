@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Wrench, Calendar, Lightbulb } from "lucide-react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import roadmapDataJson from "@/data/roadmap.json";
@@ -84,15 +85,15 @@ const Roadmap = () => {
             </p>
             <div className="flex justify-center items-center">
               <Button asChild size="lg">
-                <a
-                  href="mailto:support@flowlint.dev?subject=Feature Request"
-                  className="inline-flex items-center"
-                >
+                <Link to="/support" className="inline-flex items-center">
                   <Lightbulb className="mr-2 h-5 w-5" />
                   Request a Rule
-                </a>
+                </Link>
               </Button>
             </div>
+            <p className="text-sm text-muted-foreground text-center mt-4">
+              Use our support form to submit feature requests
+            </p>
           </div>
 
           {/* Timeline */}
@@ -173,14 +174,15 @@ const Roadmap = () => {
                 We're always looking to expand FlowLint's capabilities. Share your suggestions with us!
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-center">
+            <CardContent className="flex flex-col items-center gap-3">
               <Button asChild size="lg" variant="default">
-                <a
-                  href="mailto:support@flowlint.dev?subject=Feature Request&body=Rule name:%0D%0A%0D%0ADescription:%0D%0A%0D%0AUse case:%0D%0A%0D%0AExample workflow:"
-                >
-                  Email Your Idea
-                </a>
+                <Link to="/support">
+                  Submit Feature Request
+                </Link>
               </Button>
+              <p className="text-sm text-muted-foreground">
+                Select: <span className="font-medium">FlowLint Rules Engine</span> → <span className="font-medium">Feature Request</span>
+              </p>
             </CardContent>
           </Card>
 
