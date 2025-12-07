@@ -7,6 +7,7 @@ import logo from "@/assets/logo.png";
 const Header = () => {
   const navigation = [
     { name: "Documentation", href: "/doc" },
+    { name: "Roadmap", href: "/roadmap" },
     { name: "CLI", href: "/cli" },
     { name: "Chrome Extension", href: "/chrome-extension" },
     { name: "Status", href: "/status" },

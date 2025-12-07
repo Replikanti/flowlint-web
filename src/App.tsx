@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Support from "./pages/Support";
 import Status from "./pages/Status";
 import Documentation from "./pages/Documentation";
+import Roadmap from "./pages/Roadmap";
 import Cli from "./pages/Cli";
 import ChromeExtension from "./pages/ChromeExtension";
 import Privacy from "./pages/Privacy";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/status" element={<Status />} />
           <Route path="/doc" element={<Documentation />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/cli" element={<Cli />} />
           <Route path="/chrome-extension" element={<ChromeExtension />} />
           <Route path="/privacy" element={<Privacy />} />
