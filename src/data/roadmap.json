@@ -6,8 +6,8 @@
       "title": "Shipped Features",
       "items": [
         {
-          "title": "R1-R12 Lint Rules",
-          "description": "Complete set of 12 production-ready linting rules for n8n workflows, covering rate limiting, error handling, secrets detection, and more."
+          "title": "R1-R13 Lint Rules",
+          "description": "Complete set of 13 production-ready linting rules for n8n workflows, covering rate limiting, error handling, secrets detection, webhook acknowledgment, and more."
         },
         {
           "title": "GitHub App Integration",
@@ -32,10 +32,6 @@
       "title": "In Progress",
       "quarter": "Q4 2025",
       "items": [
-        {
-          "title": "R13: Webhook Acknowledgment Pattern",
-          "description": "Ensure webhooks acknowledge receipt before processing to prevent timeout issues and duplicate events."
-        },
         {
           "title": "R14: Retry-After Compliance",
           "description": "Validate proper handling of HTTP 429 (Too Many Requests) and Retry-After headers with provider-aware retry templates."
