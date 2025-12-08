@@ -78,6 +78,12 @@ const Documentation = () => {
       description: "Ensures nodes with error outputs have connected error handling branches.",
       details: "Prevents silent failures by requiring explicit error path handling.",
     },
+    {
+      name: "webhook_acknowledgment",
+      severity: "must",
+      description: "Detects webhooks performing heavy processing without immediate acknowledgment.",
+      details: "Prevents timeout and duplicate events by requiring 'Respond to Webhook' node before heavy operations (HTTP requests, database queries, AI/LLM calls).",
+    },
   ];
 
   return (
