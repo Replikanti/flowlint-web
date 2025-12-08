@@ -84,6 +84,12 @@ const Documentation = () => {
       description: "Detects webhooks performing heavy processing without immediate acknowledgment.",
       details: "Prevents timeout and duplicate events by requiring 'Respond to Webhook' node before heavy operations (HTTP requests, database queries, AI/LLM calls).",
     },
+    {
+      name: "retry_after_compliance",
+      severity: "should",
+      description: "Detects HTTP nodes with retry logic that ignore Retry-After headers from 429/503 responses.",
+      details: "APIs return Retry-After headers (seconds or HTTP date) to indicate when to retry. Ignoring these causes aggressive retry storms, wasted attempts, and potential API bans. Respecting server guidance prevents IP blocking and extended backoffs.",
+    },
   ];
 
   return (
