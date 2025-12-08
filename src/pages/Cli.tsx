@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Download, Code2, Terminal, FolderGit2 } from "lucide-react";
+import { Download, Code2, Terminal, FolderGit2, FileJson, Shield, CheckCircle2, Github } from "lucide-react";
 
 const Cli = () => {
   return (
@@ -211,28 +211,68 @@ rules:
           <Card className="mb-12">
             <CardHeader>
               <CardTitle>Output Formats</CardTitle>
-              <CardDescription>Choose how findings are displayed</CardDescription>
+              <CardDescription>FlowLint supports 5 output formats for different use cases and platforms</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge>Default</Badge>
-                  <h3 className="font-semibold">Stylish (Terminal)</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge>Default</Badge>
+                    <Terminal className="w-4 h-4" />
+                    <h3 className="font-semibold">Stylish</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-3">Human-readable console output with colors and formatting</p>
+                  <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>flowlint scan</pre>
+                  </div>
                 </div>
-                <p className="text-muted-foreground mb-3">Colored terminal output with syntax highlighting</p>
-                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>flowlint scan --format stylish</pre>
-                </div>
-              </div>
 
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge>CI/CD</Badge>
-                  <h3 className="font-semibold">JSON</h3>
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge>CI/CD</Badge>
+                    <FileJson className="w-4 h-4" />
+                    <h3 className="font-semibold">JSON</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-3">Machine-readable JSON for programmatic processing</p>
+                  <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>flowlint scan --format json --out-file report.json</pre>
+                  </div>
                 </div>
-                <p className="text-muted-foreground mb-3">Structured JSON output for programmatic processing</p>
-                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>flowlint scan --format json --out-file report.json</pre>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="secondary">New</Badge>
+                    <Shield className="w-4 h-4" />
+                    <h3 className="font-semibold">SARIF</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-3">SARIF 2.1.0 format for GitHub Code Scanning and security platforms</p>
+                  <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>flowlint scan --format sarif --out-file results.sarif</pre>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="secondary">New</Badge>
+                    <CheckCircle2 className="w-4 h-4" />
+                    <h3 className="font-semibold">JUnit XML</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-3">JUnit XML for Jenkins, GitLab CI, CircleCI, Azure Pipelines</p>
+                  <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>flowlint scan --format junit --out-file results.xml</pre>
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="secondary">New</Badge>
+                    <Github className="w-4 h-4" />
+                    <h3 className="font-semibold">GitHub Actions</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-3">Native GitHub Actions workflow commands for inline annotations</p>
+                  <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>flowlint scan --format github-actions</pre>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -242,32 +282,243 @@ rules:
           <Card className="mb-12">
             <CardHeader>
               <CardTitle>CI/CD Integration</CardTitle>
-              <CardDescription>Use FlowLint CLI in your automation pipelines</CardDescription>
+              <CardDescription>Comprehensive examples for integrating FlowLint into your CI/CD pipelines</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
+              {/* GitHub Actions - SARIF Upload */}
               <div>
-                <h3 className="font-semibold mb-3">GitHub Actions</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Github className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">GitHub Actions - SARIF Upload (Recommended)</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Upload results to GitHub Code Scanning for permanent PR annotations and security insights.
+                </p>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>{`- name: Scan workflows with FlowLint
-  run: |
-    npm install -g flowlint
-    flowlint scan --fail-on-error`}</pre>
+                  <pre>{`name: FlowLint
+
+on:
+  pull_request:
+    paths:
+      - '**.json'
+
+jobs:
+  flowlint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write  # Required for SARIF upload
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run FlowLint
+        run: npx flowlint scan --format sarif --out-file results.sarif
+        continue-on-error: true  # Don't fail workflow on findings
+
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: results.sarif`}</pre>
                 </div>
               </div>
 
+              {/* GitHub Actions - Workflow Annotations */}
               <div>
-                <h3 className="font-semibold mb-3">GitLab CI</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Github className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">GitHub Actions - Workflow Annotations</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Show findings directly in workflow logs with native GitHub Actions annotations.
+                </p>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>{`lint:workflows:
+                  <pre>{`name: FlowLint
+
+on:
+  pull_request:
+    paths:
+      - '**.json'
+
+jobs:
+  flowlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run FlowLint
+        run: npx flowlint scan --format github-actions --fail-on-error`}</pre>
+                </div>
+              </div>
+
+              {/* GitHub Actions - Combined Approach */}
+              <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">Best Practice</Badge>
+                  <Github className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">GitHub Actions - Combined Approach</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Use both SARIF upload and workflow annotations for immediate feedback and permanent annotations.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`name: FlowLint
+
+on:
+  pull_request:
+    paths:
+      - '**.json'
+
+jobs:
+  flowlint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run FlowLint (Workflow Annotations)
+        run: npx flowlint scan --format github-actions
+        continue-on-error: true
+
+      - name: Run FlowLint (SARIF)
+        run: npx flowlint scan --format sarif --out-file results.sarif
+        continue-on-error: true
+
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: results.sarif
+
+      - name: Check for blocking issues
+        run: npx flowlint scan --fail-on-error`}</pre>
+                </div>
+              </div>
+
+              {/* GitLab CI */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Code2 className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">GitLab CI - JUnit Reports</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Integrate with GitLab's test report UI for visual feedback in merge requests.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`flowlint:
+  stage: test
   image: node:22
   script:
-    - npm install -g flowlint
-    - flowlint scan --fail-on-error`}</pre>
+    - npx flowlint scan --format junit --out-file flowlint-results.xml
+  artifacts:
+    when: always
+    reports:
+      junit: flowlint-results.xml`}</pre>
                 </div>
               </div>
 
+              {/* Jenkins */}
               <div>
-                <h3 className="font-semibold mb-3">Pre-commit Hook</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Terminal className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">Jenkins - JUnit Integration</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Publish test results in Jenkins with the JUnit plugin.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`pipeline {
+  agent any
+
+  stages {
+    stage('FlowLint') {
+      steps {
+        sh 'npx flowlint scan --format junit --out-file flowlint-results.xml'
+      }
+      post {
+        always {
+          junit 'flowlint-results.xml'
+        }
+      }
+    }
+  }
+}`}</pre>
+                </div>
+              </div>
+
+              {/* CircleCI */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle2 className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">CircleCI - Test Results</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Store test results in CircleCI for historical tracking and insights.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`version: 2.1
+
+jobs:
+  flowlint:
+    docker:
+      - image: cimg/node:22.0
+    steps:
+      - checkout
+      - run:
+          name: Run FlowLint
+          command: npx flowlint scan --format junit --out-file test-results/flowlint.xml
+      - store_test_results:
+          path: test-results`}</pre>
+                </div>
+              </div>
+
+              {/* Azure Pipelines */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Code2 className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">Azure Pipelines - Test Results</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Publish test results to Azure DevOps for tracking and reporting.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '22.x'
+
+  - script: npx flowlint scan --format junit --out-file flowlint-results.xml
+    displayName: 'Run FlowLint'
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'flowlint-results.xml'
+      failTaskOnFailedTests: true`}</pre>
+                </div>
+              </div>
+
+              {/* Pre-commit Hook */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Terminal className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">Pre-commit Hook</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Catch issues locally before committing changes to version control.
+                </p>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
                   <pre>{`# .pre-commit-config.yaml
 repos:
@@ -321,10 +572,10 @@ repos:
 
             <Card>
               <CardHeader>
-                <CardTitle>Multiple Formats</CardTitle>
+                <CardTitle>5 Output Formats</CardTitle>
               </CardHeader>
               <CardContent className="text-muted-foreground">
-                Choose between human-readable terminal output or structured JSON for programmatic processing.
+                Support for stylish, JSON, SARIF (GitHub Code Scanning), JUnit XML (CI/CD), and GitHub Actions annotations.
               </CardContent>
             </Card>
           </div>
