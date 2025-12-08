@@ -22,12 +22,8 @@
           "description": "Complete end-to-end test suite, OpenAPI documentation, and distributed tracing implementation."
         },
         {
-          "title": "CLI Tool (Basic)",
-          "description": "Command-line interface with scan command, JSON output, config file support, and CI/CD integration via exit codes."
-        },
-        {
-          "title": "Advanced Output Formats",
-          "description": "SARIF (GitHub Code Scanning), JUnit XML (Jenkins, GitLab CI, CircleCI, Azure Pipelines), and GitHub Actions output formats for CLI tool with comprehensive CI/CD integration examples."
+          "title": "CLI Tool",
+          "description": "Complete command-line interface with scan command, multiple output formats (stylish, JSON, SARIF, JUnit XML, GitHub Actions), config file support, and comprehensive CI/CD integration examples for GitHub Actions, GitLab CI, Jenkins, CircleCI, and Azure Pipelines."
         }
       ]
     },
@@ -35,12 +31,6 @@
       "status": "in-progress",
       "title": "In Progress",
       "quarter": "Q4 2025",
-      "items": []
-    },
-    {
-      "status": "planned",
-      "title": "Coming Soon",
-      "quarter": "Q1 2026",
       "items": [
         {
           "title": "R13: Webhook Acknowledgment Pattern",
@@ -49,7 +39,14 @@
         {
           "title": "R14: Retry-After Compliance",
           "description": "Validate proper handling of HTTP 429 (Too Many Requests) and Retry-After headers with provider-aware retry templates."
-        },
+        }
+      ]
+    },
+    {
+      "status": "planned",
+      "title": "Coming Soon",
+      "quarter": "Q1 2026",
+      "items": [
         {
           "title": "Suppression Mechanism",
           "description": "Allow developers to suppress specific findings with inline comments (flowlint-disable) similar to ESLint."
