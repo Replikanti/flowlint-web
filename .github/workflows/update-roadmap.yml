@@ -14,17 +14,17 @@ jobs:
       contents: write
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@31c86eb3b33c271d103211ddb730277a0b23615b # v1.11.0
+        uses: actions/create-github-app-token@v1 # v1.11.0
         id: app-token
         with:
           app-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@v4 # v4.1.7
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
+      - uses: actions/setup-node@v4 # v4.0.3
         with:
           node-version: '22'
           cache: 'npm'
@@ -37,7 +37,7 @@ jobs:
         run: npx ts-node scripts/update-roadmap.ts
 
       - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
+        uses: stefanzweifel/git-auto-commit-action@v5 # v5.1.0
         with:
           commit_message: "chore: update roadmap based on recent changes"
           file_pattern: "ROADMAP.md"
