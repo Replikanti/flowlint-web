@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-07",
+  "lastUpdated": "2025-12-11",
   "sections": [
     {
       "status": "shipped",
@@ -30,8 +30,13 @@
     {
       "status": "in-progress",
       "title": "In Progress",
-      "quarter": "Q1 2026",
-      "items": []
+      "quarter": "Q4 2025",
+      "items": [
+        {
+          "title": "Web Interface (Online Linter)",
+          "description": "Online linter interface allowing users to paste and analyze n8n workflows directly in the browser as an alternative to the Chrome extension."
+        }
+      ]
     },
     {
       "status": "planned",
