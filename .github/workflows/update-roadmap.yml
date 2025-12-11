@@ -28,7 +28,7 @@ jobs:
         run: npx ts-node scripts/update-roadmap.ts
 
       - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ef168f4633ca # v5.0.1
+        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
         with:
           commit_message: "chore: update roadmap based on recent changes"
           file_pattern: "ROADMAP.md"
