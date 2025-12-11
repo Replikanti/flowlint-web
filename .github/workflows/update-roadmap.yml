@@ -13,7 +13,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@c1a28464531d0520a779eb29e74f830869a341b5 # v1.11.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
@@ -32,3 +41,9 @@ jobs:
         with:
           commit_message: "chore: update roadmap based on recent changes"
           file_pattern: "ROADMAP.md"
+          # No token needed here if checkout used PAT/AppToken, git is configured.
+          # But to be safe and ensure bypass rights:
+          # The action uses GITHUB_TOKEN input by default for pushing if not specified.
+          # We need to override it if we want bypass.
+          # However, this action pushes using the token in the local git config from checkout action.
+          # So we are good.
