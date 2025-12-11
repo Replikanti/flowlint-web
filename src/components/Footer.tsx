@@ -8,7 +8,7 @@ const Footer = () => {
     product: [
       { name: "Documentation", href: "/doc" },
       { name: "Roadmap", href: "/roadmap" },
-      { name: "Status", href: "/status" },
+      
       { name: "GitHub App", href: "https://github.com/apps/flowlint" },
       { name: "CLI", href: "/cli" },
       { name: "Chrome Extension", href: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" },

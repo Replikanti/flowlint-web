@@ -14,14 +14,6 @@
           "description": "Full integration with GitHub Check Runs API for automated PR reviews with inline annotations."
         },
         {
-          "title": "Observability Stack",
-          "description": "Comprehensive monitoring with Prometheus, Grafana, and Tempo for distributed tracing."
-        },
-        {
-          "title": "E2E Tests & Documentation",
-          "description": "Complete end-to-end test suite, OpenAPI documentation, and distributed tracing implementation."
-        },
-        {
           "title": "CLI Tool",
           "description": "Complete command-line interface with scan command, multiple output formats (stylish, JSON, SARIF, JUnit XML, GitHub Actions), config file support, and comprehensive CI/CD integration examples for GitHub Actions, GitLab CI, Jenkins, CircleCI, and Azure Pipelines."
         }
@@ -60,10 +52,6 @@
         {
           "title": "R16: Schedule Concurrency Guards",
           "description": "Prevent concurrent execution of scheduled workflows when not intended, detecting overlapping cron jobs."
-        },
-        {
-          "title": "R17: Environment Drift Detection",
-          "description": "Identify configuration differences between development, staging, and production workflows."
         },
         {
           "title": "Provider-Aware Retry Templates",

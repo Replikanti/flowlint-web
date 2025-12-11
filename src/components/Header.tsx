@@ -10,7 +10,7 @@ const Header = () => {
     { name: "Roadmap", href: "/roadmap" },
     { name: "CLI", href: "/cli" },
     { name: "Chrome Extension", href: "/chrome-extension" },
-    { name: "Status", href: "/status" },
+    
     { name: "Support", href: "/support" },
   ];
 
