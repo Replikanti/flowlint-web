@@ -14,7 +14,7 @@ const BRANCH = 'main';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const ROADMAP_PATH = path.join(process.cwd(), 'ROADMAP.md');
+const ROADMAP_JSON_PATH = path.join(process.cwd(), 'src', 'data', 'roadmap.json');
 
 if (!OPENAI_API_KEY) {
   console.error('Error: OPENAI_API_KEY is not set');
@@ -56,7 +56,8 @@ async function fetchChangelog(repo: string): Promise<string> {
 
 async function main() {
   try {
-    const roadmapContent = await fs.readFile(ROADMAP_PATH, 'utf-8');
+    const roadmapJsonContent = await fs.readFile(ROADMAP_JSON_PATH, 'utf-8');
+    const roadmapData = JSON.parse(roadmapJsonContent);
     
     console.log('Fetching changelogs from all repositories...');
     const changelogs = await Promise.all(REPOS.map(fetchChangelog));
@@ -65,53 +66,59 @@ async function main() {
     console.log('Analyzing changes with AI...');
 
     const prompt = `
-You are a Product Manager for FlowLint. Your goal is to update the ROADMAP.md based on the latest released features across the entire platform.
+You are a Product Manager for FlowLint. Your goal is to update the roadmap data (JSON) based on the latest released features across the entire platform.
 
 Context:
 - We have multiple components: Core, CLI, Chrome Extension, and GitHub App.
 - Below are the LATEST changelog entries from all these repositories.
-- Use the current date (${new Date().toISOString().split('T')[0]}) to identify the current Quarter (e.g., Q4 2025).
+- Use the current date (${new Date().toISOString().split('T')[0]}) as "lastUpdated".
+- Current Quarter is Q4 2025.
 
-Input Data:
+Input Data (Changelogs):
 """
 ${combinedChangelogs}
 """
 
-Current ROADMAP.md:
+Current Roadmap JSON:
 """
-${roadmapContent}
+${JSON.stringify(roadmapData, null, 2)}
 """
 
 Instructions:
 1. Analyze the changelogs to identify COMPLETED business features.
-2. Look at the "current quarter" section in the ROADMAP (and potentially previous quarters if items were late).
-3. Mark corresponding items as completed (change "- [ ]" to "- [x]").
-4. If a major feature was completed but isn't listed, you may add it to the current quarter's section as a completed item.
-5. STRICTLY PRESERVE the existing structure, future items, and formatting of the ROADMAP. Only change checkboxes or add completed items.
-6. Return ONLY the full updated content of ROADMAP.md. Do not include markdown code fences.
+2. If a feature listed in "in-progress" or "planned" is completed, MOVE it to the "shipped" section.
+3. If a major NEW feature was completed but isn't listed, ADD it to "shipped".
+4. If there are no relevant updates for a section, keep it exactly as is.
+5. "shipped" items should generally stay in "shipped".
+6. Return ONLY the valid JSON object. Do not include markdown formatting or code blocks.
+7. Ensure strict JSON validity.
     `;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o', // Using a smarter model for complex context
+      model: 'gpt-4o',
       messages: [
-        { role: 'system', content: 'You are a helpful assistant that manages product roadmaps.' },
+        { role: 'system', content: 'You are a helpful assistant that manages product roadmaps in JSON format. Return only raw JSON.' },
         { role: 'user', content: prompt },
       ],
-      temperature: 0.1, // Low temperature for stability
+      temperature: 0.1,
+      response_format: { type: "json_object" }
     });
 
-    const updatedRoadmap = response.choices[0].message.content?.trim();
+    const updatedRoadmapJson = response.choices[0].message.content?.trim();
 
-    if (updatedRoadmap) {
+    if (updatedRoadmapJson) {
+      // Validate JSON
+      const parsed = JSON.parse(updatedRoadmapJson);
+      
       // Basic sanity check
-      if (updatedRoadmap.length < roadmapContent.length * 0.5) {
-        throw new Error('Safety check failed: Generated roadmap is significantly shorter than original.');
+      if (!parsed.sections || !Array.isArray(parsed.sections)) {
+         throw new Error('Invalid JSON structure: missing sections array');
       }
 
-      await fs.writeFile(ROADMAP_PATH, updatedRoadmap, 'utf-8');
-      console.log('ROADMAP.md updated successfully based on cross-repo changes.');
+      await fs.writeFile(ROADMAP_JSON_PATH, JSON.stringify(parsed, null, 2), 'utf-8');
+      console.log('src/data/roadmap.json updated successfully.');
     } else {
-      console.error('Failed to generate updated roadmap.');
+      console.error('Failed to generate updated roadmap JSON.');
       process.exit(1);
     }
 
