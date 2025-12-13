@@ -1,79 +1,52 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Github, Bug, Lightbulb, HelpCircle, ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Support = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    project: "web",
-    type: "question",
-    title: "",
-    description: "",
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Submit to Cloudflare Workers endpoint
-      const response = await fetch(
-        import.meta.env.VITE_SUPPORT_ENDPOINT || "https://flowlint-support.mholy1983.workers.dev/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            project: formData.project,
-            type: formData.type,
-            title: formData.title,
-            description: formData.description,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      toast({
-        title: "Request Submitted",
-        description: "Thank you! We've received your support request and will get back to you soon.",
-      });
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        project: "web",
-        type: "question",
-        title: "",
-        description: "",
-      });
-    } catch (error) {
-      console.error("Error submitting support request:", error);
-      toast({
-        title: "Error",
-        description: "Failed to submit your request. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+  const supportChannels = [
+    {
+      title: "FlowLint Core",
+      description: "Issues regarding the rules engine, rule logic, or parsing.",
+      repo: "flowlint-core",
+      url: "https://github.com/Replikanti/flowlint/issues" // Fallback if monorepo, but let's assume separate based on push logs
+    },
+    {
+      title: "CLI Tool",
+      description: "Bugs or features related to the command-line interface.",
+      repo: "flowlint-cli",
+      url: "https://github.com/Replikanti/flowlint/issues"
+    },
+    {
+      title: "Chrome Extension",
+      description: "Issues with the browser extension or editor integration.",
+      repo: "flowlint-chrome",
+      url: "https://github.com/Replikanti/flowlint/issues"
+    },
+    {
+      title: "GitHub App",
+      description: "Problems with PR reviews, checks, or GitHub integration.",
+      repo: "flowlint-github-app",
+      url: "https://github.com/Replikanti/flowlint/issues"
+    },
+    {
+      title: "Website & Docs",
+      description: "Typos, missing documentation, or website bugs.",
+      repo: "flowlint-web",
+      url: "https://github.com/Replikanti/flowlint/issues"
     }
+  ];
+
+  // Based on the user's context, "Replikanti/flowlint" seems to be the main monorepo now? 
+  // Wait, the push logs showed separate remotes: "github.com:Replikanti/flowlint-core.git".
+  // So they are separate repos.
+  
+  const getIssueUrl = (repo: string, type: 'bug' | 'feature') => {
+     // Assuming separate repos under Replikanti org
+     const baseUrl = `https://github.com/Replikanti/${repo}/issues/new`;
+     const template = type === 'bug' ? 'bug_report.md' : 'feature_request.md'; // Standard templates
+     return `${baseUrl}?template=${template}`;
   };
 
   return (
@@ -81,132 +54,60 @@ const Support = () => {
       <Header />
       
       <main className="flex-1 py-20 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-3xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Support</h1>
-            <p className="text-lg text-muted-foreground">
-              Need help? Submit a support request and we'll create a GitHub issue to track your inquiry.
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-bold text-foreground mb-4">Support & Community</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              FlowLint is open source. The best way to get help, report bugs, or request features is directly on GitHub.
             </p>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Submit Support Request</CardTitle>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
+            {supportChannels.map((channel) => (
+              <Card key={channel.repo} className="flex flex-col">
+                <CardHeader>
+                  <CardTitle>{channel.title}</CardTitle>
+                  <CardDescription>{channel.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                   {/* Spacer */}
+                </CardContent>
+                <CardFooter className="flex flex-col gap-3">
+                  <Button variant="outline" className="w-full justify-between" asChild>
+                    <a href={getIssueUrl(channel.repo, 'bug')} target="_blank" rel="noopener noreferrer">
+                      <span className="flex items-center"><Bug className="mr-2 h-4 w-4" /> Report Bug</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  <Button variant="secondary" className="w-full justify-between" asChild>
+                    <a href={getIssueUrl(channel.repo, 'feature')} target="_blank" rel="noopener noreferrer">
+                      <span className="flex items-center"><Lightbulb className="mr-2 h-4 w-4" /> Request Feature</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="bg-muted/50 border-dashed">
+            <CardHeader className="text-center">
+              <div className="mx-auto bg-background p-3 rounded-full w-fit mb-4 border">
+                <HelpCircle className="h-6 w-6" />
+              </div>
+              <CardTitle>Have a general question?</CardTitle>
               <CardDescription>
-                Fill out the form below and we'll create a GitHub issue to track your request
+                For general discussions, ideas, or questions that aren't specific bugs, use our GitHub Discussions.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Your name"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="project">Project *</Label>
-                    <Select
-                      required
-                      value={formData.project}
-                      onValueChange={(value) => setFormData({ ...formData, project: value })}
-                    >
-                      <SelectTrigger id="project">
-                        <SelectValue placeholder="Select project" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="web">FlowLint Web (Website)</SelectItem>
-                        <SelectItem value="app">FlowLint App (GitHub App & API)</SelectItem>
-                        <SelectItem value="cli">FlowLint CLI</SelectItem>
-                        <SelectItem value="api">FlowLint API</SelectItem>
-                        <SelectItem value="rules">FlowLint Rules Engine</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="type">Issue Type *</Label>
-                    <Select
-                      required
-                      value={formData.type}
-                      onValueChange={(value) => setFormData({ ...formData, type: value })}
-                    >
-                      <SelectTrigger id="type">
-                        <SelectValue placeholder="Select issue type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="bug">Bug Report</SelectItem>
-                        <SelectItem value="feature">Feature Request</SelectItem>
-                        <SelectItem value="question">Question</SelectItem>
-                        <SelectItem value="help">Help Wanted</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title *</Label>
-                  <Input
-                    id="title"
-                    required
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="Brief description of your issue"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description *</Label>
-                  <Textarea
-                    id="description"
-                    required
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Please provide as much detail as possible..."
-                    rows={8}
-                  />
-                </div>
-
-                <Button type="submit" disabled={isSubmitting} className="w-full">
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    "Submit Request"
-                  )}
-                </Button>
-              </form>
+            <CardContent className="text-center pb-8">
+               <Button size="lg" asChild>
+                  <a href="https://github.com/orgs/Replikanti/discussions" target="_blank" rel="noopener noreferrer">
+                    Join the Discussion
+                  </a>
+               </Button>
             </CardContent>
           </Card>
-
-          <div className="mt-8 text-center text-sm text-muted-foreground">
-            <p>
-              We typically respond to support requests within 24 hours.
-            </p>
-          </div>
         </div>
       </main>
 

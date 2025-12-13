@@ -1,51 +1,72 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertTriangle, ShieldCheck, Zap, Code2, GitPullRequest, Chrome } from "lucide-react";
+import { CheckCircle2, AlertTriangle, ShieldCheck, Zap, Code2, GitPullRequest, Chrome, Terminal, Globe, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Home = () => {
+  const products = [
+    {
+      title: "Chrome Extension",
+      icon: Chrome,
+      description: "Real-time feedback directly inside the n8n editor. Catch errors as you build without leaving your browser.",
+      link: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli",
+      cta: "Add to Chrome",
+      external: true,
+      variant: "default" as const
+    },
+    {
+      title: "GitHub App",
+      icon: GitPullRequest,
+      description: "Automated code reviews for your PRs. Block bad workflows from merging into production.",
+      link: "https://github.com/apps/flowlint",
+      cta: "Install App",
+      external: true,
+      variant: "default" as const
+    },
+    {
+      title: "CLI Tool",
+      icon: Terminal,
+      description: "Run checks locally during development or integrate into any CI/CD pipeline (GitLab, Jenkins, Azure).",
+      link: "/cli",
+      cta: "Get Started",
+      external: false,
+      variant: "outline" as const
+    },
+    {
+      title: "Web Validator",
+      icon: Globe,
+      description: "Quick online checker. Copy & paste your workflow JSON to validate instantly without installation.",
+      link: "/roadmap", // Linking to roadmap as it is in progress
+      cta: "Coming Soon",
+      external: false,
+      variant: "secondary" as const
+    }
+  ];
+
   const features = [
     {
       icon: ShieldCheck,
       title: "Automated Security Checks",
-      description: "Detects hardcoded secrets, API keys, and credentials in your workflow files before they reach production.",
+      description: "Detects hardcoded secrets, API keys, and credentials before deployment.",
     },
     {
       icon: Zap,
       title: "Performance Analysis",
-      description: "Identifies long-running workflows, inefficient loops, and potential timeout issues.",
+      description: "Identifies long-running workflows, inefficient loops, and timeout risks.",
     },
     {
       icon: AlertTriangle,
       title: "Error Handling",
-      description: "Ensures proper retry mechanisms, rate limiting, and idempotent operations for resilient workflows.",
+      description: "Ensures proper retry mechanisms and error paths for resilient automation.",
     },
     {
       icon: Code2,
       title: "Configurable Rules",
-      description: "Customize rule severity and suppression via .flowlint.yml to match your team's needs.",
+      description: "Customize rule severity (error, warning, off) to match your team's standards.",
     },
-    {
-      icon: GitPullRequest,
-      title: "PR Integration",
-      description: "Automatic checks on every pull request with inline annotations pointing to specific issues.",
-    },
-    {
-      icon: CheckCircle2,
-      title: "Zero Configuration",
-      description: "Install the GitHub App and start getting automated reviews immediately—no setup required.",
-    },
-  ];
-
-  const rules = [
-    { name: "rate_limit_retry", severity: "must", description: "Ensures external API calls have retry mechanisms" },
-    { name: "error_handling", severity: "must", description: "Prevents configurations that hide errors" },
-    { name: "secrets", severity: "must", description: "Detects hardcoded credentials and API keys" },
-    { name: "idempotency", severity: "should", description: "Guards against non-idempotent operations with retries" },
-    { name: "dead_ends", severity: "should", description: "Finds disconnected nodes and incomplete logic" },
-    { name: "long_running", severity: "should", description: "Flags workflows with excessive runtime potential" },
   ];
 
   return (
@@ -54,247 +75,143 @@ const Home = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="absolute inset-0 bg-[var(--gradient-hero)] -z-10" />
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center space-y-8">
-              <Badge variant="secondary" className="mb-4">
-                Automated Static Analysis for n8n Workflows
-              </Badge>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
-                Automated Static Analysis
-                <br />
-                <span className="text-primary">for n8n Workflows</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                FlowLint reviews your pull requests, applies configurable lint rules, and provides detailed annotations 
-                to catch automation bugs before deployment.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button size="lg" asChild className="shadow-[var(--shadow-glow)]">
+          <div className="container mx-auto max-w-6xl text-center">
+            <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium rounded-full">
+              The Ultimate Quality Suite for n8n
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-8">
+              Ensure <span className="text-primary">Reliable</span> n8n Workflows
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">
+              FlowLint provides a complete ecosystem of tools to lint, secure, and optimize your automation. 
+              From the browser to the CI pipeline.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+               <Button size="lg" asChild className="h-12 px-8 text-lg shadow-[var(--shadow-glow)]">
                   <a href="https://github.com/apps/flowlint" target="_blank" rel="noopener noreferrer">
-                    Install GitHub App
+                    Get Started
                   </a>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <a href="/cli">Try CLI</a>
+                <Button size="lg" variant="outline" asChild className="h-12 px-8 text-lg">
+                  <Link to="/doc">
+                    Read Documentation
+                  </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
-                    <Chrome className="mr-2 h-5 w-5" />
-                    Install Extension
-                  </a>
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-4">
-                Multiple options to fit your workflow
-              </p>
             </div>
           </div>
         </section>
 
-        {/* Features Grid */}
+        {/* Products Grid */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="container mx-auto max-w-6xl">
+          <div className="container mx-auto max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Why FlowLint?
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Comprehensive analysis powered by battle-tested rules designed for production workflows
+              <h2 className="text-3xl font-bold text-foreground mb-4">One Standard, Multiple Platforms</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Whether you are building, reviewing, or deploying, FlowLint meets you where you are.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {features.map((feature) => (
-                <Card key={feature.title} className="border-border hover:shadow-[var(--shadow-md)] transition-shadow">
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <Card key={product.title} className="flex flex-col border-border hover:shadow-lg transition-all duration-200">
                   <CardHeader>
                     <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                      <feature.icon className="h-6 w-6 text-primary" />
+                      <product.icon className="h-6 w-6 text-primary" />
                     </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl">{product.title}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base">{feature.description}</CardDescription>
+                  <CardContent className="flex-1">
+                    <CardDescription className="text-base leading-relaxed">
+                      {product.description}
+                    </CardDescription>
                   </CardContent>
+                  <CardFooter>
+                    <Button variant={product.variant} className="w-full" asChild>
+                      {product.external ? (
+                        <a href={product.link} target="_blank" rel="noopener noreferrer">
+                          {product.cta} <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      ) : (
+                        <Link to={product.link}>
+                          {product.cta} <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      )}
+                    </Button>
+                  </CardFooter>
                 </Card>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Chrome Extension Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 to-primary/10">
+        {/* Key Features */}
+        <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
-                  <Chrome className="h-5 w-5" />
-                  <span className="text-sm font-semibold">Chrome Extension</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                  Lint Your Workflows in Real-Time
+              <div>
+                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Production-Grade Validation
                 </h2>
-                <p className="text-xl text-muted-foreground">
-                  Chrome Extension for n8n Editor
+                <p className="text-lg text-muted-foreground mb-8">
+                  Stop worrying about silent failures or security leaks. FlowLint applies static analysis rules designed by n8n experts.
                 </p>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-foreground">Real-time Analysis</h3>
-                      <p className="text-muted-foreground">Get instant feedback as you build workflows</p>
+                <div className="grid gap-6">
+                  {features.map((feature) => (
+                    <div key={feature.title} className="flex gap-4">
+                       <div className="flex-shrink-0 mt-1">
+                          <feature.icon className="h-6 w-6 text-primary" />
+                       </div>
+                       <div>
+                          <h3 className="font-semibold text-foreground">{feature.title}</h3>
+                          <p className="text-muted-foreground text-sm">{feature.description}</p>
+                       </div>
                     </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-foreground">Inline Annotations</h3>
-                      <p className="text-muted-foreground">See issues highlighted directly in the editor</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-foreground">Offline Capable</h3>
-                      <p className="text-muted-foreground">Works completely in your browser, no external calls</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-foreground">Zero Configuration</h3>
-                      <p className="text-muted-foreground">Install and start linting immediately</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-foreground">Privacy-First</h3>
-                      <p className="text-muted-foreground">100% browser-based, your workflows never leave your machine</p>
-                    </div>
-                  </li>
-                </ul>
-                <div className="pt-4">
-                  <Button size="lg" asChild className="shadow-[var(--shadow-glow)]">
-                    <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
-                      <Chrome className="mr-2 h-5 w-5" />
-                      Install Chrome Extension
-                    </a>
-                  </Button>
+                  ))}
                 </div>
               </div>
-              <div className="relative">
-                <div className="relative rounded-lg overflow-hidden border border-border shadow-[var(--shadow-xl)] bg-card">
-                  <img
-                    src="/chrome-ext-screenshot-4.png"
-                    alt="Chrome Extension Screenshot"
-                    className="w-full h-auto"
-                  />
-                </div>
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border bg-card/50">
+                 {/* Placeholder for a code snippet or UI screenshot showing a finding */}
+                 <div className="p-8 font-mono text-sm">
+                    <div className="text-red-500 mb-2">Error: R14 [Must Fix]</div>
+                    <div className="text-foreground mb-4">HTTP Request node &quot;Stripe API&quot; has retryOnFail enabled but ignores Retry-After headers.</div>
+                    
+                    <div className="pl-4 border-l-2 border-red-500/50 text-muted-foreground">
+                       <div>&quot;parameters&quot;: &#123;</div>
+                       <div className="text-yellow-500">  &quot;retryOnFail&quot;: true,</div>
+                       <div>  &quot;url&quot;: &quot;https://api.stripe.com...&quot;</div>
+                       <div>&#125;</div>
+                    </div>
+                    <div className="mt-4 text-green-500 flex items-center gap-2">
+                       <CheckCircle2 className="h-4 w-4" />
+                       <span>Recommendation: Enable "Respect Retry-After Header"</span>
+                    </div>
+                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                How It Works
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Choose your preferred integration method
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8 relative">
-              {/* Connecting lines for desktop */}
-              <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-border -z-10" />
-              
-              <div className="text-center space-y-4">
-                <div className="h-16 w-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto shadow-[var(--shadow-glow)]">
-                  1
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">Choose Your Integration</h3>
-                <p className="text-muted-foreground">
-                  Install the GitHub App for PR reviews, CLI for local development, or Chrome Extension for real-time editor feedback
-                </p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="h-16 w-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto shadow-[var(--shadow-glow)]">
-                  2
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">Automatic Analysis</h3>
-                <p className="text-muted-foreground">
-                  FlowLint parses your workflow files and applies configurable lint rules to detect security, performance, and reliability issues
-                </p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="h-16 w-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto shadow-[var(--shadow-glow)]">
-                  3
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">Get Feedback</h3>
-                <p className="text-muted-foreground">
-                  Review detailed findings with inline annotations, severity levels, and actionable recommendations
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Rules */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="container mx-auto max-w-4xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Built-in Rules
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Production-ready rules covering security, performance, and reliability
-              </p>
-            </div>
-            <div className="space-y-4">
-              {rules.map((rule) => (
-                <Card key={rule.name} className="border-border">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg font-mono">{rule.name}</CardTitle>
-                      <Badge variant={rule.severity === "must" ? "destructive" : "secondary"}>
-                        {rule.severity}
-                      </Badge>
-                    </div>
-                    <CardDescription className="text-base">{rule.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto max-w-4xl">
-            <Card className="bg-primary text-primary-foreground border-0 shadow-[var(--shadow-glow)]">
-              <CardHeader className="text-center space-y-4 pb-8">
-                <CardTitle className="text-3xl sm:text-4xl font-bold">
-                  Ready to Improve Your Workflows?
-                </CardTitle>
-                <CardDescription className="text-primary-foreground/90 text-lg">
-                  Start catching bugs before they reach production. Install FlowLint in minutes.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-center pb-8">
-                <Button size="lg" variant="secondary" asChild className="shadow-[var(--shadow-md)]">
-                  <a href="https://github.com/apps/flowlint" target="_blank" rel="noopener noreferrer">
-                    Install GitHub App
-                  </a>
+        {/* Open Source Banner */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-zinc-900 to-zinc-950 text-white">
+          <div className="container mx-auto max-w-5xl text-center">
+             <h2 className="text-3xl font-bold mb-4">Proudly Open Source</h2>
+             <p className="text-zinc-400 max-w-2xl mx-auto mb-8">
+                We believe in transparency and community. FlowLint is open source, allowing you to audit the rules, contribute improvements, or self-host.
+             </p>
+             <div className="flex flex-wrap justify-center gap-4">
+                <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
+                   <a href="https://github.com/Replikanti/flowlint" target="_blank" rel="noopener noreferrer">
+                      <Code2 className="mr-2 h-4 w-4" />
+                      View on GitHub
+                   </a>
                 </Button>
-              </CardContent>
-            </Card>
+             </div>
           </div>
         </section>
+
       </main>
 
       <Footer />
