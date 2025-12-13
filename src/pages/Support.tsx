@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Github, Bug, Lightbulb, HelpCircle, ArrowRight, Loader2, Mail } from "lucide-react";
+import { Loader2, Mail } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -16,83 +16,61 @@ const Support = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    project: "web",
     type: "question",
-    message: "",
+    title: "",
+    description: "",
   });
 
-  const supportChannels = [
-    {
-      title: "FlowLint Core",
-      description: "Issues regarding the rules engine, rule logic, or parsing.",
-      repo: "flowlint-core",
-    },
-    {
-      title: "CLI Tool",
-      description: "Bugs or features related to the command-line interface.",
-      repo: "flowlint-cli",
-    },
-    {
-      title: "Chrome Extension",
-      description: "Issues with the browser extension or editor integration.",
-      repo: "flowlint-chrome",
-    },
-    {
-      title: "GitHub App",
-      description: "Problems with PR reviews, checks, or GitHub integration.",
-      repo: "flowlint-github-app",
-    },
-    {
-      title: "Examples & Templates",
-      description: "Issues with rule examples, false positives in docs, or new patterns.",
-      repo: "flowlint-examples",
-    },
-    {
-      title: "Website & Docs",
-      description: "Typos, missing documentation, or website bugs.",
-      repo: "flowlint-web",
-    }
-  ];
-
-  const getIssueUrl = (repo: string, type: 'bug' | 'feature') => {
-     const baseUrl = `https://github.com/Replikanti/${repo}/issues/new`;
-     const template = type === 'bug' ? 'bug_report.md' : 'feature_request.md';
-     return `${baseUrl}?template=${template}`;
-  };
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      // Use the configured support endpoint
       const response = await fetch(
         import.meta.env.VITE_SUPPORT_ENDPOINT || "https://flowlint-support.mholy1983.workers.dev/",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             name: formData.name,
             email: formData.email,
+            project: formData.project,
             type: formData.type,
-            title: `Support Request from ${formData.name}`,
-            description: formData.message,
-            project: "web-contact-form" // Internal tag
+            title: formData.title,
+            description: formData.description,
           }),
         }
       );
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+      }
 
       toast({
-        title: "Message Sent",
-        description: "We've received your message and will get back to you via email.",
+        title: "Request Submitted",
+        description: `Thank you! Issue #${result.issue_number} has been created in our GitHub repository.`,
       });
 
-      setFormData({ name: "", email: "", type: "question", message: "" });
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        project: "web",
+        type: "question",
+        title: "",
+        description: "",
+      });
     } catch (error) {
       console.error("Error submitting support request:", error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again later or email us directly.",
+        description: "Failed to submit your request. Please try again later or contact us directly.",
         variant: "destructive",
       });
     } finally {
@@ -105,141 +83,126 @@ const Support = () => {
       <Header />
       
       <main className="flex-1 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Support & Community</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the right channel for your request. For bug reports and feature requests, we recommend using GitHub.
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-foreground mb-4">Support Center</h1>
+            <p className="text-lg text-muted-foreground">
+              Submit a bug report or feature request. We will automatically track it in our development system.
             </p>
           </div>
 
-          {/* GitHub Channels Grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-20">
-            {supportChannels.map((channel) => (
-              <Card key={channel.repo} className="flex flex-col border-border hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Github className="h-5 w-5" />
-                    {channel.title}
-                  </CardTitle>
-                  <CardDescription>{channel.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1" />
-                <CardFooter className="grid grid-cols-2 gap-3">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={getIssueUrl(channel.repo, 'bug')} target="_blank" rel="noopener noreferrer">
-                      <Bug className="mr-2 h-3.5 w-3.5" /> Report Bug
-                    </a>
-                  </Button>
-                  <Button variant="secondary" size="sm" asChild>
-                    <a href={getIssueUrl(channel.repo, 'feature')} target="_blank" rel="noopener noreferrer">
-                      <Lightbulb className="mr-2 h-3.5 w-3.5" /> Feature
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Create Support Ticket</CardTitle>
+              <CardDescription>
+                Fill out the details below. This will create a GitHub Issue for our team.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Your name"
+                    />
+                  </div>
 
-          {/* Alternative Contact Method (No GitHub) */}
-          <div className="max-w-3xl mx-auto">
-             <div className="text-center mb-8">
-               <h2 className="text-2xl font-bold text-foreground mb-2">No GitHub Account?</h2>
-               <p className="text-muted-foreground">
-                 Use the form below to contact us directly via email.
-               </p>
-             </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                </div>
 
-             <Card>
-               <CardHeader>
-                 <CardTitle className="flex items-center gap-2">
-                   <Mail className="h-5 w-5" />
-                   Contact Support
-                 </CardTitle>
-                 <CardDescription>
-                   For general inquiries, account help, or if you prefer not to use GitHub.
-                 </CardDescription>
-               </CardHeader>
-               <CardContent>
-                 <form onSubmit={handleFormSubmit} className="space-y-6">
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <div className="space-y-2">
-                       <Label htmlFor="name">Name</Label>
-                       <Input
-                         id="name"
-                         required
-                         value={formData.name}
-                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                         placeholder="Your name"
-                       />
-                     </div>
-                     <div className="space-y-2">
-                       <Label htmlFor="email">Email</Label>
-                       <Input
-                         id="email"
-                         type="email"
-                         required
-                         value={formData.email}
-                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                         placeholder="your.email@example.com"
-                       />
-                     </div>
-                   </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="project">Product Component</Label>
+                    <Select
+                      required
+                      value={formData.project}
+                      onValueChange={(value) => setFormData({ ...formData, project: value })}
+                    >
+                      <SelectTrigger id="project">
+                        <SelectValue placeholder="Select product" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="chrome">Chrome Extension</SelectItem>
+                        <SelectItem value="cli">CLI Tool</SelectItem>
+                        <SelectItem value="app">GitHub App</SelectItem>
+                        <SelectItem value="core">FlowLint Core (Rules)</SelectItem>
+                        <SelectItem value="web">Website / Docs</SelectItem>
+                        <SelectItem value="examples">Examples</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                   <div className="space-y-2">
-                     <Label htmlFor="type">Topic</Label>
-                     <Select
-                       value={formData.type}
-                       onValueChange={(value) => setFormData({ ...formData, type: value })}
-                     >
-                       <SelectTrigger id="type">
-                         <SelectValue placeholder="Select topic" />
-                       </SelectTrigger>
-                       <SelectContent>
-                         <SelectItem value="question">General Question</SelectItem>
-                         <SelectItem value="bug">Report a Bug (Email)</SelectItem>
-                         <SelectItem value="billing">Billing / Account</SelectItem>
-                         <SelectItem value="other">Other</SelectItem>
-                       </SelectContent>
-                     </Select>
-                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="type">Issue Type</Label>
+                    <Select
+                      required
+                      value={formData.type}
+                      onValueChange={(value) => setFormData({ ...formData, type: value })}
+                    >
+                      <SelectTrigger id="type">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bug">Bug Report</SelectItem>
+                        <SelectItem value="feature">Feature Request</SelectItem>
+                        <SelectItem value="question">Question</SelectItem>
+                        <SelectItem value="help">Help Wanted</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-                   <div className="space-y-2">
-                     <Label htmlFor="message">Message</Label>
-                     <Textarea
-                       id="message"
-                       required
-                       value={formData.message}
-                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                       placeholder="How can we help you?"
-                       rows={6}
-                     />
-                   </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    required
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="Short summary of the issue"
+                  />
+                </div>
 
-                   <Button type="submit" disabled={isSubmitting} className="w-full">
-                     {isSubmitting ? (
-                       <>
-                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                         Sending...
-                       </>
-                     ) : (
-                       "Send Message"
-                     )}
-                   </Button>
-                 </form>
-               </CardContent>
-             </Card>
-          </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    required
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Please provide details, reproduction steps, or context..."
+                    rows={8}
+                  />
+                </div>
 
-          {/* Discussion Link */}
-          <div className="mt-16 text-center">
-            <Button variant="link" asChild className="text-muted-foreground">
-              <a href="https://github.com/orgs/Replikanti/discussions" target="_blank" rel="noopener noreferrer" className="inline-flex items-center">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Visit GitHub Discussions for community help
-              </a>
-            </Button>
-          </div>
+                <Button type="submit" disabled={isSubmitting} className="w-full">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Ticket"
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </main>
 
