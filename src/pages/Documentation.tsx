@@ -2,26 +2,29 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Chrome, 
   Terminal, 
   GitPullRequest, 
   BookOpen, 
   Code2, 
-  AlertTriangle, 
-  CheckCircle2, 
   Settings,
   Menu,
-  ExternalLink,
   ShieldCheck,
   Zap,
-  Layout
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ruleExamplesData from "@/data/rule-examples.json";
+
+const ruleExamples = ruleExamplesData as Record<string, { id: string, readme: string, good: string, bad: string }>;
 
 const Documentation = () => {
   const [activeSection, setActiveSection] = useState("overview");
@@ -439,46 +442,113 @@ rules:
                 </div>
 
                 <div className="space-y-6">
-                  {implementedRules.map((rule) => (
-                    <Card key={rule.name} id={rule.name} className="scroll-mt-24">
-                      <CardHeader>
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                          <div className="space-y-1">
-                            <CardTitle className="font-mono text-xl flex items-center gap-2">
-                              {rule.name}
-                              <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
-                                {rule.id}
+                  {implementedRules.map((rule) => {
+                    const example = ruleExamples[rule.id];
+                    
+                    return (
+                      <Card key={rule.name} id={rule.name} className="scroll-mt-24">
+                        <CardHeader>
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div className="space-y-1">
+                              <CardTitle className="font-mono text-xl flex items-center gap-2">
+                                {rule.name}
+                                <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                                  {rule.id}
+                                </Badge>
+                              </CardTitle>
+                              <CardDescription className="text-base">{rule.description}</CardDescription>
+                            </div>
+                            <div className="flex items-center gap-3 shrink-0">
+                              <Badge variant={
+                                rule.severity === "must" ? "destructive" : 
+                                rule.severity === "should" ? "secondary" : "outline"
+                              }>
+                                {rule.severity}
                               </Badge>
-                            </CardTitle>
-                            <CardDescription className="text-base">{rule.description}</CardDescription>
+                              
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="outline" size="sm">
+                                    <Code2 className="mr-2 h-3.5 w-3.5" />
+                                    View Examples
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-0 gap-0 overflow-hidden">
+                                  <DialogHeader className="p-6 pb-2">
+                                    <DialogTitle className="text-2xl font-mono">{rule.id}: {rule.name}</DialogTitle>
+                                  </DialogHeader>
+                                  
+                                  {example ? (
+                                    <Tabs defaultValue="readme" className="flex-1 flex flex-col min-h-0">
+                                      <div className="px-6">
+                                        <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-6">
+                                          <TabsTrigger 
+                                            value="readme" 
+                                            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-3 px-1"
+                                          >
+                                            Description
+                                          </TabsTrigger>
+                                          <TabsTrigger 
+                                            value="good" 
+                                            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-green-500 text-green-600/80 data-[state=active]:text-green-600 rounded-none py-3 px-1"
+                                          >
+                                            Valid Example
+                                          </TabsTrigger>
+                                          <TabsTrigger 
+                                            value="bad" 
+                                            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-500 text-red-600/80 data-[state=active]:text-red-600 rounded-none py-3 px-1"
+                                          >
+                                            Invalid Example
+                                          </TabsTrigger>
+                                        </TabsList>
+                                      </div>
+                                      
+                                      <div className="flex-1 overflow-y-auto bg-muted/10">
+                                        <TabsContent value="readme" className="m-0 p-6">
+                                          <div className="prose dark:prose-invert max-w-none prose-sm prose-pre:bg-muted prose-pre:border">
+                                            <ReactMarkdown>{example.readme}</ReactMarkdown>
+                                          </div>
+                                        </TabsContent>
+                                        <TabsContent value="good" className="m-0 h-full">
+                                           <SyntaxHighlighter 
+                                              language="json" 
+                                              style={vscDarkPlus} 
+                                              customStyle={{margin: 0, height: '100%', padding: '1.5rem', fontSize: '0.875rem'}}
+                                              showLineNumbers
+                                           >
+                                             {example.good}
+                                           </SyntaxHighlighter>
+                                        </TabsContent>
+                                        <TabsContent value="bad" className="m-0 h-full">
+                                           <SyntaxHighlighter 
+                                              language="json" 
+                                              style={vscDarkPlus} 
+                                              customStyle={{margin: 0, height: '100%', padding: '1.5rem', fontSize: '0.875rem'}}
+                                              showLineNumbers
+                                           >
+                                             {example.bad}
+                                           </SyntaxHighlighter>
+                                        </TabsContent>
+                                      </div>
+                                    </Tabs>
+                                  ) : (
+                                    <div className="flex items-center justify-center h-full text-muted-foreground p-6">
+                                      Examples are not yet available for this rule in the documentation cache.
+                                    </div>
+                                  )}
+                                </DialogContent>
+                              </Dialog>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-3 shrink-0">
-                            <Badge variant={
-                              rule.severity === "must" ? "destructive" : 
-                              rule.severity === "should" ? "secondary" : "outline"
-                            }>
-                              {rule.severity}
-                            </Badge>
-                            <Button variant="outline" size="sm" asChild>
-                              <a 
-                                href={`https://github.com/Replikanti/flowlint/tree/main/flowlint-examples/${rule.id}`}
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                              >
-                                <Code2 className="mr-2 h-3.5 w-3.5" />
-                                Examples
-                              </a>
-                            </Button>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-sm text-muted-foreground bg-muted/30 p-4 rounded-md">
+                            {rule.details}
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-sm text-muted-foreground bg-muted/30 p-4 rounded-md">
-                          {rule.details}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
