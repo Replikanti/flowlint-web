@@ -16,29 +16,33 @@ const REPO_MAP = {
   },
   'app': {
     owner: 'Replikanti',
-    repo: 'flowlint-app'
+    repo: 'flowlint-github-app'
   },
   'cli': {
     owner: 'Replikanti',
-    repo: 'flowlint-app'
+    repo: 'flowlint-cli'
   },
-  'api': {
+  'chrome': {
     owner: 'Replikanti',
-    repo: 'flowlint-app'
+    repo: 'flowlint-chrome'
   },
-  'rules': {
+  'core': {
     owner: 'Replikanti',
-    repo: 'flowlint'
+    repo: 'flowlint-core'
+  },
+  'examples': {
+    owner: 'Replikanti',
+    repo: 'flowlint-examples'
   }
 };
 
 // Issue type to label mapping
 const TYPE_LABELS = {
-  'bug': 'bug',
-  'feature': 'enhancement',
-  'help': 'help wanted',
-  'question': 'question',
-  'other': 'question'
+  'bug': ['bug', 'triage'],
+  'feature': ['enhancement', 'triage'],
+  'help': ['help wanted', 'support'],
+  'question': ['question', 'support'],
+  'other': ['triage']
 };
 
 addEventListener('fetch', event => {
@@ -111,7 +115,11 @@ async function handleRequest(request) {
     const issueBody = createIssueBody(data);
 
     // Get labels
-    const labels = [TYPE_LABELS[data.type] || 'question', 'support'];
+    let labels = TYPE_LABELS[data.type] || ['question'];
+    // Add "support" label to everything coming from this form to distinguish it
+    if (!labels.includes('support')) {
+        labels.push('support');
+    }
 
     // Create GitHub issue
     const githubResponse = await fetch(
@@ -119,13 +127,13 @@ async function handleRequest(request) {
       {
         method: 'POST',
         headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Authorization': `token ${GITHUB_TOKEN}`, // GITHUB_TOKEN is a secret in Cloudflare Worker
           'Content-Type': 'application/json',
           'Accept': 'application/vnd.github.v3+json',
           'User-Agent': 'FlowLint-Support-Worker'
         },
         body: JSON.stringify({
-          title: `[${data.type.toUpperCase()}] ${data.title}`,
+          title: `[Support] ${data.title}`,
           body: issueBody,
           labels: labels
         })
@@ -138,7 +146,7 @@ async function handleRequest(request) {
 
       return new Response(JSON.stringify({
         success: false,
-        error: 'Failed to create GitHub issue'
+        error: 'Failed to create GitHub issue. Please try again later.'
       }), {
         status: 500,
         headers: {
