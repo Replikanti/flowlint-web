@@ -3,6 +3,12 @@ import { Github, Chrome, Code2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 
+const NpmIcon = () => (
+  <svg className="h-5 w-5 mr-2" viewBox="0 0 780 250" fill="currentColor">
+    <path d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z"/>
+  </svg>
+);
+
 const Footer = () => {
   const links = {
     product: [
@@ -52,6 +58,24 @@ const Footer = () => {
               >
                 <Github className="h-5 w-5 mr-2" />
                 View on GitHub
+              </a>
+              <a
+                href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Chrome className="h-5 w-5 mr-2" />
+                Install Chrome Extension
+              </a>
+              <a
+                href="https://www.npmjs.com/package/flowlint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <NpmIcon />
+                Install CLI from npm
               </a>
             </div>
           </div>
