@@ -94,7 +94,7 @@ const Header = () => {
 
           {/* Desktop Navigation - Centered/Right */}
           <div className="hidden md:flex flex-1 justify-end items-center space-x-4">
-            <NavigationMenu>
+            <NavigationMenu className="[&>div:last-child]:left-auto [&>div:last-child]:right-0">
               <NavigationMenuList>
                 
                 {/* Products Dropdown */}
