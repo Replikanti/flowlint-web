@@ -175,16 +175,16 @@ const Home = () => {
               <div className="relative rounded-xl overflow-hidden shadow-2xl border border-border bg-card/50">
                  {/* Placeholder for a code snippet or UI screenshot showing a finding */}
                  <div className="p-8 font-mono text-sm">
-                    <div className="text-red-500 mb-2">Error: R14 [Must Fix]</div>
+                    <div className="text-red-600 dark:text-red-400 mb-2">Error: R14 [Must Fix]</div>
                     <div className="text-foreground mb-4">HTTP Request node &quot;Stripe API&quot; has retryOnFail enabled but ignores Retry-After headers.</div>
                     
                     <div className="pl-4 border-l-2 border-red-500/50 text-muted-foreground">
                        <div>&quot;parameters&quot;: &#123;</div>
-                       <div className="text-yellow-500">  &quot;retryOnFail&quot;: true,</div>
+                       <div className="text-amber-600 dark:text-amber-400">  &quot;retryOnFail&quot;: true,</div>
                        <div>  &quot;url&quot;: &quot;https://api.stripe.com...&quot;</div>
                        <div>&#125;</div>
                     </div>
-                    <div className="mt-4 text-green-500 flex items-center gap-2">
+                    <div className="mt-4 text-green-600 dark:text-green-400 flex items-center gap-2">
                        <CheckCircle2 className="h-4 w-4" />
                        <span>Recommendation: Enable "Respect Retry-After Header"</span>
                     </div>
