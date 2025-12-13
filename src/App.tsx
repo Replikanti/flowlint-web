@@ -14,6 +14,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
+import ScrollToTop from "./components/ScrollToTop";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -22,6 +24,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter basename="/">
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/get-started" element={<Onboarding />} />
