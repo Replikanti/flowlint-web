@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare": "husky install",
-    "prebuild": "npx tsx scripts/fetch-examples.ts",
+    "prebuild": "npx tsx scripts/fetch-examples.ts && npx tsx scripts/generate-sitemap.ts",
     "lint-staged": "lint-staged",
     "dev": "vite",
     "build": "vite build",
