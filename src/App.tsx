@@ -14,6 +14,7 @@ const Support = lazy(() => import("./pages/Support"));
 const Documentation = lazy(() => import("./pages/Documentation"));
 const Roadmap = lazy(() => import("./pages/Roadmap"));
 const Cli = lazy(() => import("./pages/Cli"));
+const GitHubApp = lazy(() => import("./pages/GitHubApp"));
 const ChromeExtension = lazy(() => import("./pages/ChromeExtension"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/doc" element={<Documentation />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/cli" element={<Cli />} />
+            <Route path="/github-app" element={<GitHubApp />} />
             <Route path="/chrome-extension" element={<ChromeExtension />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/tos" element={<Terms />} />

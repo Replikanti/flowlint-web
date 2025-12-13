@@ -21,9 +21,9 @@ const Home = () => {
       title: "GitHub App",
       icon: GitPullRequest,
       description: "Automated code reviews for your PRs. Block bad workflows from merging into production.",
-      link: "https://github.com/apps/flowlint",
-      cta: "Install App",
-      external: true,
+      link: "/github-app",
+      cta: "Learn More",
+      external: false,
       variant: "default" as const
     },
     {

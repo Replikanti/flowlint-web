@@ -38,8 +38,8 @@ const Onboarding = () => {
       benefits: ["Automated PR reviews", "Zero config", "Inline annotations", "Branch protection"],
       action: {
         label: "Install App",
-        href: "https://github.com/apps/flowlint",
-        external: true
+        href: "/github-app",
+        external: false
       }
     },
     {

@@ -45,10 +45,9 @@ const Header = () => {
     },
     {
       title: "GitHub App",
-      href: "https://github.com/apps/flowlint",
+      href: "/github-app",
       description: "Automated PR reviews and checks.",
       icon: GitPullRequest,
-      external: true,
     },
     {
       title: "Web Validator",
