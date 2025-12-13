@@ -25,7 +25,7 @@ jobs:
 
       - name: Send email notification for new issue
         if: github.event.action == 'opened'
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@4226df7daafa6fc901a43789c49bf7ab309066e7 # v3
         with:
           server_address: smtp.gmail.com
           server_port: 587
@@ -49,7 +49,7 @@ jobs:
 
       - name: Send email notification for closed issue
         if: github.event.action == 'closed'
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@4226df7daafa6fc901a43789c49bf7ab309066e7 # v3
         with:
           server_address: smtp.gmail.com
           server_port: 587
