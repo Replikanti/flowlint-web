@@ -17,7 +17,7 @@ const Footer = () => {
       { name: "Web Validator", href: "/roadmap" },
       { name: "GitHub App", href: "https://github.com/apps/flowlint" },
       { name: "CLI", href: "/cli" },
-      { name: "Chrome Extension", href: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" },
+      { name: "Chrome Extension", href: "/chrome-extension" },
     ],
     opensource: [
       { name: "flowlint-core", href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-core" },
