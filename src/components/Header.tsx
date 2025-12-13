@@ -157,11 +157,11 @@ const Header = () => {
 
                 {/* Direct Links */}
                 <NavigationMenuItem>
-                  <Link to="/support">
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink href="/support" className={navigationMenuTriggerStyle()} asChild>
+                    <Link to="/support">
                       Support
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
 
               </NavigationMenuList>
