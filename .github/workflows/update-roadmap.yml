@@ -36,6 +36,7 @@ jobs:
       - name: Update Roadmap
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: npx ts-node scripts/update-roadmap.ts
 
       - name: Commit Changes
