@@ -11,7 +11,7 @@ const Privacy = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
-            <p className="text-muted-foreground">Last updated: November 16, 2025</p>
+            <p className="text-muted-foreground">Last updated: December 13, 2025</p>
           </div>
 
           <div className="space-y-6">
@@ -22,36 +22,45 @@ const Privacy = () => {
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
                   FlowLint ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains 
-                  how we collect, use, and safeguard information when you use our GitHub App.
+                  how we collect, use, and safeguard information when you use our suite of tools: the FlowLint GitHub App, 
+                  CLI Tool, Chrome Extension, and Website.
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Information We Collect</CardTitle>
+                <CardTitle>Data Collection & Usage by Product</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground">
+              <CardContent className="space-y-6 text-muted-foreground">
                 <div>
-                  <h3 className="font-semibold text-foreground mb-2">GitHub Repository Data</h3>
-                  <p>
-                    When you install FlowLint, we access workflow files (*.n8n.json and similar) from your repositories 
-                    to perform static analysis. We only read files necessary for analysis and do not store repository 
-                    contents permanently.
+                  <h3 className="font-semibold text-foreground mb-2">1. Chrome Extension & CLI Tool</h3>
+                  <p className="mb-2">
+                    These tools are designed with a "Privacy First" approach.
                   </p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li><strong>Local Processing:</strong> All workflow analysis is performed locally on your machine (CLI) or in your browser (Extension).</li>
+                    <li><strong>No Data Upload:</strong> Your workflow files, credentials, and configuration are NEVER sent to our servers.</li>
+                    <li><strong>Offline Capability:</strong> These tools function without an internet connection (except for installation).</li>
+                  </ul>
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-foreground mb-2">GitHub Metadata</h3>
-                  <p>
-                    We collect pull request metadata, including PR numbers, commit SHAs, and repository names to 
-                    provide check run results.
+                  <h3 className="font-semibold text-foreground mb-2">2. GitHub App</h3>
+                  <p className="mb-2">
+                    When you install the FlowLint GitHub App, we require access to specific repository data to function:
                   </p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li><strong>Repository Content:</strong> We read workflow files (*.n8n.json) to perform static analysis. Files are processed in memory and immediately discarded. We do not permanently store your code.</li>
+                    <li><strong>Metadata:</strong> We collect PR numbers, commit SHAs, and repository names to post Check Runs and annotations.</li>
+                  </ul>
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-foreground mb-2">Usage Information</h3>
+                  <h3 className="font-semibold text-foreground mb-2">3. Web Validator (Online Linter)</h3>
                   <p>
-                    We collect anonymous usage statistics, including the number of analyses performed and rule 
-                    violations detected, to improve our service.
+                    The online validator runs entirely in your browser using client-side JavaScript. 
+                    Data you paste into the validator is not sent to any backend server and is cleared when you close the tab.
                   </p>
                 </div>
               </CardContent>
@@ -59,33 +68,20 @@ const Privacy = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>How We Use Your Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground">
-                <ul className="list-disc list-inside space-y-2">
-                  <li>To analyze workflow files and identify potential issues</li>
-                  <li>To provide check run results and annotations on pull requests</li>
-                  <li>To improve FlowLint's accuracy and performance</li>
-                  <li>To communicate with you about service updates or issues</li>
-                  <li>To ensure security and prevent abuse</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Data Storage and Security</CardTitle>
+                <CardTitle>Usage Analytics</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  We implement appropriate technical and organizational measures to protect your data:
+                  We may collect anonymous, aggregated usage statistics to improve our products, such as:
                 </p>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>Workflow files are analyzed in memory and not permanently stored</li>
-                  <li>GitHub tokens are encrypted and never logged</li>
-                  <li>All communications use HTTPS encryption</li>
-                  <li>Access to systems is restricted and monitored</li>
+                  <li>Number of analyses performed</li>
+                  <li>Common rule violations (without specific details)</li>
+                  <li>Error rates and performance metrics</li>
                 </ul>
+                <p>
+                  You can opt-out of analytics in the CLI and Chrome Extension settings.
+                </p>
               </CardContent>
             </Card>
 
@@ -94,28 +90,26 @@ const Privacy = () => {
                 <CardTitle>Data Retention</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
-                <p>
-                  We retain minimal data necessary for service operation:
-                </p>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>Analysis results: 90 days</li>
-                  <li>Usage statistics: Indefinitely (anonymized)</li>
-                  <li>Support requests: Until resolved</li>
+                  <li><strong>GitHub App Analysis Results:</strong> Retained for 90 days (Check Run history on GitHub).</li>
+                  <li><strong>Support Requests:</strong> Retained until resolved or as required for records.</li>
+                  <li><strong>CLI/Extension Data:</strong> Not retained by us; stays on your device.</li>
                 </ul>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Third-Party Services</CardTitle>
+                <CardTitle>Security</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  FlowLint integrates with GitHub and may use other third-party services for infrastructure. 
-                  These services have their own privacy policies:
+                  We implement industry-standard security measures:
                 </p>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>GitHub: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" className="text-primary hover:underline">Privacy Statement</a></li>
+                  <li>Encryption in transit (HTTPS) for all services.</li>
+                  <li>Ephemeral processing of code (no long-term storage).</li>
+                  <li>Strict access controls for infrastructure.</li>
                 </ul>
               </CardContent>
             </Card>
@@ -125,40 +119,23 @@ const Privacy = () => {
                 <CardTitle>Your Rights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
-                <p>You have the right to:</p>
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Access the data we have about you</li>
-                  <li>Request deletion of your data</li>
-                  <li>Uninstall the GitHub App at any time</li>
-                  <li>Object to data processing</li>
-                </ul>
                 <p>
-                  To exercise these rights, please contact us through our{" "}
-                  <a href="/support" className="text-primary hover:underline">support page</a>.
+                  You have the right to access, correct, or delete personal data we hold. Since we collect minimal personal data, 
+                  most "deletion" is achieved simply by uninstalling our App/Extension.
+                </p>
+                <p>
+                  For specific requests, please contact us via our <a href="/support" className="text-primary hover:underline">Support Center</a>.
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Changes to This Policy</CardTitle>
+                <CardTitle>Changes</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  We may update this Privacy Policy from time to time. We will notify you of significant changes 
-                  by posting a notice on our website or through GitHub.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Us</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground">
-                <p>
-                  If you have questions about this Privacy Policy or our data practices, please use our{" "}
-                  <a href="/support" className="text-primary hover:underline">support form</a> to reach out to us.
+                  We may update this policy. Significant changes will be communicated via our website or GitHub releases.
                 </p>
               </CardContent>
             </Card>
