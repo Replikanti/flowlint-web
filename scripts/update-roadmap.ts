@@ -95,7 +95,7 @@ Instructions:
     `;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-5.1',
       messages: [
         { role: 'system', content: 'You are a helpful assistant that manages product roadmaps in JSON format. Return only raw JSON.' },
         { role: 'user', content: prompt },
