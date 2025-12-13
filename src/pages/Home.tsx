@@ -91,9 +91,9 @@ const Home = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                <Button size="lg" asChild className="h-12 px-8 text-lg shadow-[var(--shadow-glow)]">
-                  <a href="https://github.com/apps/flowlint" target="_blank" rel="noopener noreferrer">
+                  <Link to="/get-started">
                     Get Started
-                  </a>
+                  </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="h-12 px-8 text-lg">
                   <Link to="/doc">

@@ -168,15 +168,7 @@ const Header = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* GitHub Action */}
-            <div className="ml-4 pl-4 border-l border-border">
-              <Button variant="ghost" size="icon" asChild>
-                <a href="https://github.com/Replikanti/flowlint" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </a>
-              </Button>
-            </div>
+            {/* GitHub Action Removed */}
           </div>
 
           {/* Mobile Navigation */}
