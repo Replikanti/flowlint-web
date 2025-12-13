@@ -6,6 +6,8 @@ on:
     paths:
       - 'CHANGELOG.md'
   workflow_dispatch:
+  repository_dispatch:
+    types: [flowlint-core-released]
 
 jobs:
   update-roadmap:
