@@ -20,10 +20,10 @@ const Footer = () => {
       { name: "Chrome Extension", href: "/chrome-extension" },
     ],
     opensource: [
-      { name: "flowlint-core", href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-core" },
-      { name: "flowlint-cli", href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-cli" },
-      { name: "flowlint-chrome", href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-chrome" },
-      { name: "flowlint-github-app", href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-github-app" },
+      { name: "flowlint-core", href: "https://github.com/Replikanti/flowlint-core/tree/main" },
+      { name: "flowlint-cli", href: "https://github.com/Replikanti/flowlint-cli/tree/main" },
+      { name: "flowlint-chrome", href: "https://github.com/Replikanti/flowlint-chrome/tree/main" },
+      { name: "flowlint-github-app", href: "https://github.com/Replikanti/flowlint-github-app/tree/main" },
     ],
     company: [
       { name: "About", href: "/" },

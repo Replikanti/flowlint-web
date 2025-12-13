@@ -203,25 +203,25 @@ const Home = () => {
              </p>
              <div className="flex flex-wrap justify-center gap-4">
                 <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
-                   <a href="https://github.com/Replikanti/flowlint/tree/main/flowlint-core" target="_blank" rel="noopener noreferrer">
+                   <a href="https://github.com/Replikanti/flowlint-core/tree/main" target="_blank" rel="noopener noreferrer">
                       <Code2 className="mr-2 h-4 w-4" />
                       Core Engine
                    </a>
                 </Button>
                 <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
-                   <a href="https://github.com/Replikanti/flowlint/tree/main/flowlint-cli" target="_blank" rel="noopener noreferrer">
+                   <a href="https://github.com/Replikanti/flowlint-cli/tree/main" target="_blank" rel="noopener noreferrer">
                       <Terminal className="mr-2 h-4 w-4" />
                       CLI Tool
                    </a>
                 </Button>
                 <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
-                   <a href="https://github.com/Replikanti/flowlint/tree/main/flowlint-chrome" target="_blank" rel="noopener noreferrer">
+                   <a href="https://github.com/Replikanti/flowlint-chrome/tree/main" target="_blank" rel="noopener noreferrer">
                       <Chrome className="mr-2 h-4 w-4" />
                       Chrome Ext
                    </a>
                 </Button>
                 <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
-                   <a href="https://github.com/Replikanti/flowlint/tree/main/flowlint-github-app" target="_blank" rel="noopener noreferrer">
+                   <a href="https://github.com/Replikanti/flowlint-github-app/tree/main" target="_blank" rel="noopener noreferrer">
                       <GitPullRequest className="mr-2 h-4 w-4" />
                       GitHub App
                    </a>
