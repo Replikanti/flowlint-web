@@ -1,318 +1,488 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Chrome, 
+  Terminal, 
+  GitPullRequest, 
+  BookOpen, 
+  Code2, 
+  AlertTriangle, 
+  CheckCircle2, 
+  Settings,
+  Menu,
+  ExternalLink,
+  ShieldCheck,
+  Zap,
+  Layout
+} from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { cn } from "@/lib/utils";
 
 const Documentation = () => {
+  const [activeSection, setActiveSection] = useState("overview");
+
+  const sidebarItems = [
+    {
+      title: "Getting Started",
+      items: [
+        { id: "overview", label: "Overview", icon: BookOpen },
+        { id: "configuration", label: "Configuration", icon: Settings },
+      ]
+    },
+    {
+      title: "Platforms",
+      items: [
+        { id: "chrome", label: "Chrome Extension", icon: Chrome },
+        { id: "cli", label: "CLI Tool", icon: Terminal },
+        { id: "github", label: "GitHub App", icon: GitPullRequest },
+      ]
+    },
+    {
+      title: "Reference",
+      items: [
+        { id: "rules", label: "Rules", icon: ShieldCheck },
+      ]
+    }
+  ];
+
   const implementedRules = [
     {
+      id: "R1",
       name: "rate_limit_retry",
       severity: "must",
       description: "Ensures that nodes making external API calls have a retry mechanism configured.",
-      details: "Critical for building resilient workflows that can handle transient network issues or temporary service unavailability.",
+      details: "Critical for building resilient workflows that can handle transient network issues.",
     },
     {
+      id: "R2",
       name: "error_handling",
       severity: "must",
-      description: "Prevents the use of configurations that might hide errors.",
-      details: "Workflows should explicitly handle errors rather than ignoring them with continueOnFail: true.",
+      description: "Prevents the use of configurations that might hide errors (continueOnFail).",
+      details: "Workflows should explicitly handle errors rather than ignoring them.",
     },
     {
+      id: "R3",
+      name: "idempotency",
+      severity: "should",
+      description: "Guards against operations that are not idempotent with retries configured.",
+      details: "Detects patterns where a webhook trigger could lead to duplicate processing.",
+    },
+    {
+      id: "R4",
       name: "secrets",
       severity: "must",
       description: "Detects hardcoded secrets, API keys, or credentials within node parameters.",
       details: "All secrets should be stored securely using credential management systems.",
     },
     {
-      name: "idempotency",
-      severity: "should",
-      description: "Guards against operations that are not idempotent with retries configured.",
-      details: "Detects patterns where a webhook trigger could lead to duplicate processing in databases or external services.",
-    },
-    {
+      id: "R5",
       name: "dead_ends",
       severity: "should",
       description: "Finds nodes or workflow branches not connected to any other node.",
       details: "Indicates incomplete or dead logic that should be reviewed or removed.",
     },
     {
+      id: "R6",
       name: "long_running",
       severity: "should",
       description: "Flags workflows with potential for excessive runtime.",
-      details: "Detects loops with high iteration counts or long timeouts that could cause performance issues.",
+      details: "Detects loops with high iteration counts or long timeouts.",
     },
     {
+      id: "R7",
       name: "alert_log_enforcement",
       severity: "should",
       description: "Ensures critical paths include logging or alerting steps.",
-      details: "For example, a failed payment processing branch should trigger an alert for monitoring.",
+      details: "Failed critical operations should trigger an alert for monitoring.",
     },
     {
+      id: "R8",
       name: "unused_data",
       severity: "nit",
       description: "Detects when node output data is not consumed by subsequent nodes.",
-      details: "Identifies unnecessary data processing that could be optimized or removed.",
+      details: "Identifies unnecessary data processing that could be optimized.",
     },
     {
+      id: "R9",
       name: "config_literals",
       severity: "should",
-      description: "Flags hardcoded literals (URLs, environment tags, tenant IDs) that should come from configuration.",
-      details: "Promotes externalized configuration and prevents hardcoded environment-specific values.",
+      description: "Flags hardcoded literals that should come from configuration.",
+      details: "Promotes externalized configuration and prevents hardcoded environment values.",
     },
     {
+      id: "R10",
       name: "naming_convention",
       severity: "nit",
       description: "Enforces consistent and descriptive naming for nodes.",
-      details: "Improves workflow readability and maintainability (e.g., 'Fetch Customer Data from CRM' vs 'HTTP Request').",
+      details: "Improves workflow readability (e.g., 'Fetch Customer' vs 'HTTP Request').",
     },
     {
+      id: "R11",
       name: "deprecated_nodes",
       severity: "should",
       description: "Warns about deprecated node types and suggests alternatives.",
       details: "Helps maintain workflows using current, supported node implementations.",
     },
     {
+      id: "R12",
       name: "unhandled_error_path",
       severity: "must",
       description: "Ensures nodes with error outputs have connected error handling branches.",
       details: "Prevents silent failures by requiring explicit error path handling.",
     },
     {
+      id: "R13",
       name: "webhook_acknowledgment",
       severity: "must",
       description: "Detects webhooks performing heavy processing without immediate acknowledgment.",
-      details: "Prevents timeout and duplicate events by requiring 'Respond to Webhook' node before heavy operations (HTTP requests, database queries, AI/LLM calls).",
+      details: "Prevents timeout and duplicate events by requiring early response.",
     },
     {
+      id: "R14",
       name: "retry_after_compliance",
       severity: "should",
-      description: "Detects HTTP nodes with retry logic that ignore Retry-After headers from 429/503 responses.",
-      details: "APIs return Retry-After headers (seconds or HTTP date) to indicate when to retry. Ignoring these causes aggressive retry storms, wasted attempts, and potential API bans. Respecting server guidance prevents IP blocking and extended backoffs.",
+      description: "Detects HTTP nodes with retry logic that ignore Retry-After headers.",
+      details: "Respecting server guidance prevents IP blocking and extended backoffs.",
     },
   ];
+
+  const Nav = ({ className, onSelect }: { className?: string; onSelect?: () => void }) => (
+    <nav className={cn("space-y-6", className)}>
+      {sidebarItems.map((group) => (
+        <div key={group.title}>
+          <h4 className="font-semibold mb-2 px-2 text-sm text-foreground">{group.title}</h4>
+          <div className="space-y-1">
+            {group.items.map((item) => (
+              <Button
+                key={item.id}
+                variant={activeSection === item.id ? "secondary" : "ghost"}
+                className={cn("w-full justify-start", activeSection === item.id && "font-medium")}
+                onClick={() => {
+                  setActiveSection(item.id);
+                  onSelect?.();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <item.icon className="mr-2 h-4 w-4" />
+                {item.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </nav>
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
-      <main className="flex-1 py-20 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Documentation</h1>
-            <p className="text-lg text-muted-foreground">
-              Everything you need to know about using FlowLint
-            </p>
+      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Mobile Sidebar Trigger */}
+          <div className="lg:hidden mb-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">
+                  <Menu className="mr-2 h-4 w-4" />
+                  Documentation Menu
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 p-6">
+                <div className="font-bold text-lg mb-6">Documentation</div>
+                <Nav />
+              </SheetContent>
+            </Sheet>
           </div>
 
-          <Tabs defaultValue="getting-started" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="getting-started">Getting Started</TabsTrigger>
-              <TabsTrigger value="configuration">Configuration</TabsTrigger>
-              <TabsTrigger value="rules">Rules Reference</TabsTrigger>
-            </TabsList>
+          {/* Desktop Sidebar */}
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <div className="sticky top-24">
+              <Nav />
+            </div>
+          </aside>
 
-            <TabsContent value="getting-started" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Start</CardTitle>
-                  <CardDescription>Get up and running with FlowLint in minutes</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">1. Install the GitHub App</h3>
-                    <p className="text-muted-foreground mb-2">
-                      Visit the{" "}
-                      <a
-                        href="https://github.com/apps/flowlint"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        FlowLint GitHub App
-                      </a>{" "}
-                      page and click "Install". Select the repositories you want to analyze.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">2. Create a Pull Request</h3>
-                    <p className="text-muted-foreground mb-2">
-                      Make changes to any workflow files (*.n8n.json or workflow JSON files) and create a pull request.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">3. Review Check Results</h3>
-                    <p className="text-muted-foreground mb-2">
-                      FlowLint will automatically run and post a Check Run with detailed findings and inline annotations.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>What Files Does FlowLint Analyze?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    By default, FlowLint analyzes the following file patterns:
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            {activeSection === "overview" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <h1 className="text-4xl font-bold mb-4">Introduction to FlowLint</h1>
+                  <p className="text-lg text-muted-foreground">
+                    FlowLint is a static analysis tool designed specifically for n8n workflows. 
+                    It helps you catch bugs, security issues, and performance bottlenecks before they reach production.
                   </p>
-                  <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                    <li>**/*.n8n.json</li>
-                    <li>**/workflows/**/*.json</li>
-                    <li>**/*.yaml (workflow definitions)</li>
-                    <li>**/*.json (workflow files)</li>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <ShieldCheck className="h-5 w-5 text-primary" />
+                        Security
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      Detect hardcoded secrets and unsafe configurations automatically.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Zap className="h-5 w-5 text-primary" />
+                        Reliability
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      Ensure retries, error handling, and idempotency are correctly implemented.
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">How it Works</h2>
+                  <p className="text-muted-foreground mb-4">
+                    FlowLint parses the JSON structure of your n8n workflows and applies a set of rules (R1-R14).
+                    You can run it in three ways:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+                    <li><strong>Chrome Extension:</strong> While editing in the browser.</li>
+                    <li><strong>CLI:</strong> On your local machine or CI server.</li>
+                    <li><strong>GitHub App:</strong> Automatically on every Pull Request.</li>
                   </ul>
-                  <p className="text-muted-foreground mt-4">
-                    You can customize which files are included or ignored using a .flowlint.yml configuration file.
-                  </p>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </div>
+              </div>
+            )}
 
-            <TabsContent value="configuration" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Configuration File</CardTitle>
-                  <CardDescription>Customize FlowLint behavior with .flowlint.yml</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Create a <code className="bg-muted px-2 py-1 rounded">.flowlint.yml</code> file in your repository root to configure FlowLint:
+            {activeSection === "configuration" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <h1 className="text-3xl font-bold mb-4">Configuration</h1>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Customize FlowLint behavior using a <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">.flowlint.yml</code> file in your project root.
                   </p>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Example Configuration</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm font-mono">
 {`version: 1
 files:
   include:
     - "**/*.n8n.json"
     - "**/workflows/**/*.json"
   ignore:
-    - "samples/**"
-    - "**/*.spec.json"
     - "node_modules/**"
-
-report:
-  annotations: true
-  summary_limit: 25
+    - "dist/**"
 
 rules:
   rate_limit_retry:
     enabled: true
-    max_concurrency: 5
-  error_handling:
-    enabled: true
-    forbid_continue_on_fail: true
-  secrets:
-    enabled: true
-  idempotency:
-    enabled: true
-  dead_ends:
-    enabled: true
+  
+  # Disable specific rule
+  naming_convention:
+    enabled: false
+
+  # Customize rule options
   long_running:
     enabled: true
-    max_iterations: 1000
-    timeout_ms: 300000`}
-                  </pre>
-                </CardContent>
-              </Card>
+    max_iterations: 5000`}
+                    </pre>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Configuration Options</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold mb-2">files.include</h3>
-                    <p className="text-muted-foreground">
-                      Array of glob patterns for files to analyze
-                    </p>
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold">Options Reference</h2>
+                  <div className="grid gap-4">
+                    <div className="border rounded-lg p-4">
+                      <div className="font-mono font-bold mb-1">files.include</div>
+                      <div className="text-sm text-muted-foreground">List of glob patterns to analyze. Defaults to standard n8n JSON patterns.</div>
+                    </div>
+                    <div className="border rounded-lg p-4">
+                      <div className="font-mono font-bold mb-1">files.ignore</div>
+                      <div className="text-sm text-muted-foreground">List of glob patterns to exclude. Supports .gitignore syntax.</div>
+                    </div>
+                    <div className="border rounded-lg p-4">
+                      <div className="font-mono font-bold mb-1">rules</div>
+                      <div className="text-sm text-muted-foreground">Object where keys are rule IDs (e.g., rate_limit_retry) and values are configuration objects.</div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">files.ignore</h3>
-                    <p className="text-muted-foreground">
-                      Array of glob patterns for files to exclude from analysis
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">report.annotations</h3>
-                    <p className="text-muted-foreground">
-                      Enable or disable inline annotations in pull requests
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">rules</h3>
-                    <p className="text-muted-foreground">
-                      Configure individual rules. Each rule can be enabled/disabled and may have additional options.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </div>
+              </div>
+            )}
 
-            <TabsContent value="rules" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Available Rules</CardTitle>
-                  <CardDescription>All {implementedRules.length} production-ready linting rules</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {implementedRules.map((rule) => (
-                      <div key={rule.name} className="border-b border-border pb-6 last:border-0 last:pb-0">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-lg font-mono font-semibold">{rule.name}</h3>
-                          <Badge variant={rule.severity === "must" ? "destructive" : rule.severity === "should" ? "secondary" : "outline"}>
-                            {rule.severity}
-                          </Badge>
+            {activeSection === "chrome" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Chrome className="h-8 w-8 text-primary" />
+                    <h1 className="text-3xl font-bold">Chrome Extension</h1>
+                  </div>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Get real-time feedback directly inside the n8n editor interface. Ideally suited for individual developers building workflows.
+                  </p>
+                  <Button asChild>
+                    <a href="https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli" target="_blank" rel="noopener noreferrer">
+                      Install from Web Store
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold">Features</h2>
+                  <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+                    <li><strong>Real-time Analysis:</strong> Checks your workflow as you modify it.</li>
+                    <li><strong>Inline Annotations:</strong> Highlights problematic nodes directly on the canvas.</li>
+                    <li><strong>Privacy First:</strong> Analysis happens locally in your browser. No data is sent to our servers.</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {activeSection === "cli" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Terminal className="h-8 w-8 text-primary" />
+                    <h1 className="text-3xl font-bold">CLI Tool</h1>
+                  </div>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Run lint checks from your command line or integrate with any CI/CD provider (GitLab, Jenkins, Azure DevOps).
+                  </p>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Installation</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm font-mono">
+                      npm install -g flowlint
+                    </pre>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Usage</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="mb-2 text-sm font-medium">Scan current directory:</p>
+                      <pre className="bg-muted p-3 rounded overflow-x-auto text-sm font-mono">flowlint scan .</pre>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-sm font-medium">Scan specific file:</p>
+                      <pre className="bg-muted p-3 rounded overflow-x-auto text-sm font-mono">flowlint scan ./workflows/my-workflow.json</pre>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-sm font-medium">Output JSON format (for tools):</p>
+                      <pre className="bg-muted p-3 rounded overflow-x-auto text-sm font-mono">flowlint scan . --format json {'>'} report.json</pre>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {activeSection === "github" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <GitPullRequest className="h-8 w-8 text-primary" />
+                    <h1 className="text-3xl font-bold">GitHub App</h1>
+                  </div>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Zero-configuration integration for GitHub repositories. Automatically reviews Pull Requests.
+                  </p>
+                  <Button asChild>
+                    <a href="https://github.com/apps/flowlint" target="_blank" rel="noopener noreferrer">
+                      Install GitHub App
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold">How it Works</h2>
+                  <ol className="list-decimal list-inside space-y-4 text-muted-foreground ml-4">
+                    <li>
+                      <strong>Install:</strong> Add the app to your GitHub organization or account.
+                    </li>
+                    <li>
+                      <strong>Configure:</strong> Optionally add a <code>.flowlint.yml</code> file to the repo.
+                    </li>
+                    <li>
+                      <strong>Open PR:</strong> When you open a Pull Request modifying workflow files, FlowLint runs automatically.
+                    </li>
+                    <li>
+                      <strong>Review:</strong> Results appear in the "Checks" tab and as inline comments on the changed lines.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            )}
+
+            {activeSection === "rules" && (
+              <div className="space-y-8 animate-in fade-in duration-500">
+                <div>
+                  <h1 className="text-3xl font-bold mb-4">Rules Reference</h1>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Detailed documentation for all {implementedRules.length} linting rules.
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {implementedRules.map((rule) => (
+                    <Card key={rule.name} id={rule.name} className="scroll-mt-24">
+                      <CardHeader>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="space-y-1">
+                            <CardTitle className="font-mono text-xl flex items-center gap-2">
+                              {rule.name}
+                              <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                                {rule.id}
+                              </Badge>
+                            </CardTitle>
+                            <CardDescription className="text-base">{rule.description}</CardDescription>
+                          </div>
+                          <div className="flex items-center gap-3 shrink-0">
+                            <Badge variant={
+                              rule.severity === "must" ? "destructive" : 
+                              rule.severity === "should" ? "secondary" : "outline"
+                            }>
+                              {rule.severity}
+                            </Badge>
+                            <Button variant="outline" size="sm" asChild>
+                              <a 
+                                href={`https://github.com/Replikanti/flowlint/tree/main/flowlint-examples/${rule.id}`}
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                              >
+                                <Code2 className="mr-2 h-3.5 w-3.5" />
+                                Examples
+                              </a>
+                            </Button>
+                          </div>
                         </div>
-                        <p className="text-muted-foreground mb-2">{rule.description}</p>
-                        <p className="text-sm text-muted-foreground italic">{rule.details}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Rule Severity Levels</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge variant="destructive">must</Badge>
-                        <span className="font-semibold">Critical Issues</span>
-                      </div>
-                      <p className="text-muted-foreground">
-                        Blocks PR merge. These issues must be fixed before deployment.
-                      </p>
-                    </div>
-                    <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge variant="secondary">should</Badge>
-                        <span className="font-semibold">Warnings</span>
-                      </div>
-                      <p className="text-muted-foreground">
-                        Recommended improvements. Does not block PR merge but should be addressed.
-                      </p>
-                    </div>
-                    <div>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge variant="outline">nit</Badge>
-                        <span className="font-semibold">Minor Issues</span>
-                      </div>
-                      <p className="text-muted-foreground">
-                        Style and readability suggestions. Optional improvements for code quality.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground bg-muted/30 p-4 rounded-md">
+                          {rule.details}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </main>
 
