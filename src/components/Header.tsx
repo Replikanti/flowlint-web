@@ -69,10 +69,9 @@ const Header = () => {
     },
     {
       title: "Rule Examples",
-      href: "https://github.com/Replikanti/flowlint/tree/main/flowlint-examples",
+      href: "/doc",
       description: "See valid and invalid workflow patterns.",
       icon: Code2,
-      external: true,
     },
     {
       title: "Roadmap",

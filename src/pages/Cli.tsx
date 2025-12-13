@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,10 +28,10 @@ const Cli = () => {
                 </a>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <a href="https://github.com/Replikanti/flowlint-examples" target="_blank" rel="noopener noreferrer">
+                <Link to="/doc">
                   <Code2 className="w-4 h-4 mr-2" />
-                  View Examples
-                </a>
+                  View Rule Examples
+                </Link>
               </Button>
             </div>
           </div>
@@ -593,7 +594,7 @@ repos:
                   </a>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <a href="/doc">View All Rules</a>
+                  <Link to="/doc">View All Rules</Link>
                 </Button>
               </div>
             </CardContent>
