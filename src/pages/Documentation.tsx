@@ -12,6 +12,8 @@ import {
   Menu,
   ShieldCheck,
   Zap,
+  Copy,
+  Check
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "@/components/Header";
@@ -22,9 +24,46 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Mermaid from "@/components/Mermaid";
 import ruleExamplesData from "@/data/rule-examples.json";
 
 const ruleExamples = ruleExamplesData as Record<string, { id: string, readme: string, good: string, bad: string }>;
+
+const CodeBlockWithCopy = ({ code, language }: { code: string; language: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="relative group h-full">
+      <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+         <span className="bg-black/80 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            Paste into n8n
+         </span>
+         <Button 
+            size="icon" 
+            variant="secondary" 
+            className="h-8 w-8 bg-background/80 backdrop-blur shadow-sm hover:bg-background"
+            onClick={handleCopy}
+         >
+            {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+         </Button>
+      </div>
+      <SyntaxHighlighter 
+          language={language} 
+          style={vscDarkPlus} 
+          customStyle={{margin: 0, height: '100%', padding: '1.5rem', fontSize: '0.875rem'}}
+          showLineNumbers
+      >
+        {code}
+      </SyntaxHighlighter>
+    </div>
+  );
+};
 
 const Documentation = () => {
   const [activeSection, setActiveSection] = useState("overview");
@@ -505,29 +544,41 @@ rules:
                                       
                                       <div className="flex-1 overflow-y-auto bg-muted/10">
                                         <TabsContent value="readme" className="m-0 p-6">
-                                          <div className="prose dark:prose-invert max-w-none prose-sm prose-pre:bg-muted prose-pre:border">
-                                            <ReactMarkdown>{example.readme}</ReactMarkdown>
+                                          <div className="prose dark:prose-invert max-w-none prose-sm prose-pre:bg-transparent prose-pre:p-0">
+                                            <ReactMarkdown
+                                              components={{
+                                                code(props) {
+                                                  const {node, className, children, ...rest} = props
+                                                  const match = /language-(\w+)/.exec(className || '')
+                                                  const isMermaid = match && match[1] === 'mermaid';
+                                                  
+                                                  if (isMermaid) {
+                                                    return <Mermaid chart={String(children).replace(/\n$/, '')} />
+                                                  }
+                                                  
+                                                  return !match ? (
+                                                    <code className={className} {...rest}>
+                                                      {children}
+                                                    </code>
+                                                  ) : (
+                                                    <div className="bg-muted p-4 rounded-md my-4">
+                                                      <code className={className} {...rest}>
+                                                        {children}
+                                                      </code>
+                                                    </div>
+                                                  )
+                                                }
+                                              }}
+                                            >
+                                              {example.readme}
+                                            </ReactMarkdown>
                                           </div>
                                         </TabsContent>
                                         <TabsContent value="good" className="m-0 h-full">
-                                           <SyntaxHighlighter 
-                                              language="json" 
-                                              style={vscDarkPlus} 
-                                              customStyle={{margin: 0, height: '100%', padding: '1.5rem', fontSize: '0.875rem'}}
-                                              showLineNumbers
-                                           >
-                                             {example.good}
-                                           </SyntaxHighlighter>
+                                           <CodeBlockWithCopy code={example.good} language="json" />
                                         </TabsContent>
                                         <TabsContent value="bad" className="m-0 h-full">
-                                           <SyntaxHighlighter 
-                                              language="json" 
-                                              style={vscDarkPlus} 
-                                              customStyle={{margin: 0, height: '100%', padding: '1.5rem', fontSize: '0.875rem'}}
-                                              showLineNumbers
-                                           >
-                                             {example.bad}
-                                           </SyntaxHighlighter>
+                                           <CodeBlockWithCopy code={example.bad} language="json" />
                                         </TabsContent>
                                       </div>
                                     </Tabs>
