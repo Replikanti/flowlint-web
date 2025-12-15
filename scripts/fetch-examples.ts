@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { Octokit } from '@octokit/rest';
 
 const ORG = 'Replikanti';
 const REPO = 'flowlint-examples';
@@ -7,8 +8,9 @@ const BRANCH = 'main';
 const BASE_URL = `https://raw.githubusercontent.com/${ORG}/${REPO}/${BRANCH}`;
 const OUT_FILE = path.join(process.cwd(), 'src', 'data', 'rule-examples.json');
 
-// Rules range to fetch
-const RULES = Array.from({ length: 14 }, (_, i) => `R${i + 1}`);
+// Use GITHUB_TOKEN if available (e.g., in CI), otherwise anonymous (rate limited)
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 interface RuleExample {
   id: string;
@@ -17,8 +19,8 @@ interface RuleExample {
   bad: string;
 }
 
-async function fetchFile(rule: string, filename: string): Promise<string> {
-  const url = `${BASE_URL}/${rule}/${filename}`;
+async function fetchFileContent(ruleId: string, filename: string): Promise<string> {
+  const url = `${BASE_URL}/${ruleId}/${filename}`;
   try {
     const res = await fetch(url);
     if (!res.ok) {
@@ -27,25 +29,55 @@ async function fetchFile(rule: string, filename: string): Promise<string> {
     }
     return await res.text();
   } catch (error) {
-    console.warn(`Warning: Could not fetch ${filename} for ${rule}`, error);
+    console.warn(`Warning: Could not fetch ${filename} for ${ruleId}:`, error);
     return '';
   }
 }
 
+async function getRuleFolders(): Promise<string[]> {
+  try {
+    const { data } = await octokit.repos.getContent({
+      owner: ORG,
+      repo: REPO,
+      path: '', // List root contents
+      ref: BRANCH,
+    });
+
+    if (!Array.isArray(data)) {
+      throw new Error('Unexpected API response for repo content.');
+    }
+
+    // Filter for directories starting with 'R'
+    const ruleFolders = data
+      .filter(item => item.type === 'dir' && item.name.match(/^R\d+$/))
+      .map(item => item.name)
+      .sort((a, b) => parseInt(a.substring(1)) - parseInt(b.substring(1))); // Sort numerically
+
+    return ruleFolders;
+  } catch (error) {
+    console.error('Error fetching rule folders from GitHub API:', error);
+    process.exit(1); // Exit if we can't get the list of rules
+  }
+}
+
 async function main() {
+  console.log('Fetching list of rule folders from GitHub...');
+  const ruleFolders = await getRuleFolders();
+  console.log('Found rule folders:', ruleFolders.join(', '));
+
   console.log('Fetching rule examples from GitHub...');
   const data: Record<string, RuleExample> = {};
 
-  for (const rule of RULES) {
-    console.log(`Processing ${rule}...`);
+  for (const ruleId of ruleFolders) {
+    console.log(`Processing ${ruleId}...`);
     const [readme, good, bad] = await Promise.all([
-      fetchFile(rule, 'README.md'),
-      fetchFile(rule, 'good-example.json'),
-      fetchFile(rule, 'bad-example.json'),
+      fetchFileContent(ruleId, 'README.md'),
+      fetchFileContent(ruleId, 'good-example.json'),
+      fetchFileContent(ruleId, 'bad-example.json'),
     ]);
 
-    data[rule] = {
-      id: rule,
+    data[ruleId] = {
+      id: ruleId,
       readme,
       good,
       bad
