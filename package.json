@@ -8,7 +8,7 @@
     "prebuild": "npx tsx scripts/fetch-examples.ts && npx tsx scripts/generate-sitemap.ts",
     "lint-staged": "lint-staged",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npx tsx scripts/generate-static-routes.ts",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
