@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { Octokit } from '@octokit/rest';
+import { RULES_METADATA, type RuleMetadata } from '@replikanti/flowlint-core';
 
 const ORG = 'Replikanti';
 const REPO = 'flowlint-examples';
@@ -12,8 +13,7 @@ const OUT_FILE = path.join(process.cwd(), 'src', 'data', 'rule-examples.json');
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
-interface RuleExample {
-  id: string;
+interface RuleExample extends RuleMetadata {
   readme: string;
   good: string;
   bad: string;
@@ -34,50 +34,25 @@ async function fetchFileContent(ruleId: string, filename: string): Promise<strin
   }
 }
 
-async function getRuleFolders(): Promise<string[]> {
-  try {
-    const { data } = await octokit.repos.getContent({
-      owner: ORG,
-      repo: REPO,
-      path: '', // List root contents
-      ref: BRANCH,
-    });
-
-    if (!Array.isArray(data)) {
-      throw new Error('Unexpected API response for repo content.');
-    }
-
-    // Filter for directories starting with 'R'
-    const ruleFolders = data
-      .filter(item => item.type === 'dir' && item.name.match(/^R\d+$/))
-      .map(item => item.name)
-      .sort((a, b) => parseInt(a.substring(1)) - parseInt(b.substring(1))); // Sort numerically
-
-    return ruleFolders;
-  } catch (error) {
-    console.error('Error fetching rule folders from GitHub API:', error);
-    process.exit(1); // Exit if we can't get the list of rules
-  }
-}
-
 async function main() {
-  console.log('Fetching list of rule folders from GitHub...');
-  const ruleFolders = await getRuleFolders();
-  console.log('Found rule folders:', ruleFolders.join(', '));
-
   console.log('Fetching rule examples from GitHub...');
+  
+  // Use metadata from core as the source of truth for rules
+  const rules = RULES_METADATA;
+  console.log(`Found ${rules.length} rules defined in core.`);
+
   const data: Record<string, RuleExample> = {};
 
-  for (const ruleId of ruleFolders) {
-    console.log(`Processing ${ruleId}...`);
+  for (const rule of rules) {
+    console.log(`Processing ${rule.id} (${rule.name})...`);
     const [readme, good, bad] = await Promise.all([
-      fetchFileContent(ruleId, 'README.md'),
-      fetchFileContent(ruleId, 'good-example.json'),
-      fetchFileContent(ruleId, 'bad-example.json'),
+      fetchFileContent(rule.id, 'README.md'),
+      fetchFileContent(rule.id, 'good-example.json'),
+      fetchFileContent(rule.id, 'bad-example.json'),
     ]);
 
-    data[ruleId] = {
-      id: ruleId,
+    data[rule.id] = {
+      ...rule,
       readme,
       good,
       bad

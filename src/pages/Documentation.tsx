@@ -1,19 +1,20 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Chrome,
-  Terminal,
-  GitPullRequest,
-  BookOpen,
-  Code2,
+import { 
+  Chrome, 
+  Terminal, 
+  GitPullRequest, 
+  BookOpen, 
   Settings,
   Menu,
   ShieldCheck,
   Zap,
   Copy,
-  Check
+  Check,
+  Code2,
+  LucideIcon
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Header from "@/components/Header";
@@ -26,8 +27,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Mermaid from "@/components/Mermaid";
 import ruleExamplesData from "@/data/rule-examples.json";
+import { Node } from "unist"; // Import Node from unist
 
-const ruleExamples = ruleExamplesData as Record<string, { id: string, readme: string, good: string, bad: string }>;
+// Interface matching RuleExample from fetch-examples.ts
+interface RuleExample {
+  id: string;
+  name: string;
+  severity: "must" | "should" | "nit";
+  description: string;
+  details: string;
+  readme: string;
+  good: string;
+  bad: string;
+}
+
+const ruleExamples = ruleExamplesData as Record<string, RuleExample>;
 
 const CodeBlockWithCopy = ({ code, language }: { code: string; language: string }) => {
   const [copied, setCopied] = useState(false);
@@ -65,135 +79,16 @@ const CodeBlockWithCopy = ({ code, language }: { code: string; language: string 
   );
 };
 
-const Documentation = () => {
-  const [activeSection, setActiveSection] = useState("overview");
+interface NavProps {
+  className?: string;
+  onSelect?: () => void;
+  activeSection: string;
+  setActiveSection: (section: string) => void;
+  sidebarItems: { title: string; items: { id: string; label: string; icon: LucideIcon }[] }[];
+}
 
-  const sidebarItems = [
-    {
-      title: "Getting Started",
-      items: [
-        { id: "overview", label: "Overview", icon: BookOpen },
-        { id: "configuration", label: "Configuration", icon: Settings },
-      ]
-    },
-    {
-      title: "Platforms",
-      items: [
-        { id: "chrome", label: "Chrome Extension", icon: Chrome },
-        { id: "cli", label: "CLI Tool", icon: Terminal },
-        { id: "github", label: "GitHub App", icon: GitPullRequest },
-      ]
-    },
-    {
-      title: "Reference",
-      items: [
-        { id: "rules", label: "Rules", icon: ShieldCheck },
-      ]
-    }
-  ];
-
-  const implementedRules = [
-    {
-      id: "R1",
-      name: "rate_limit_retry",
-      severity: "must",
-      description: "Ensures that nodes making external API calls have a retry mechanism configured.",
-      details: "Critical for building resilient workflows that can handle transient network issues.",
-    },
-    {
-      id: "R2",
-      name: "error_handling",
-      severity: "must",
-      description: "Prevents the use of configurations that might hide errors (continueOnFail).",
-      details: "Workflows should explicitly handle errors rather than ignoring them.",
-    },
-    {
-      id: "R3",
-      name: "idempotency",
-      severity: "should",
-      description: "Guards against operations that are not idempotent with retries configured.",
-      details: "Detects patterns where a webhook trigger could lead to duplicate processing.",
-    },
-    {
-      id: "R4",
-      name: "secrets",
-      severity: "must",
-      description: "Detects hardcoded secrets, API keys, or credentials within node parameters.",
-      details: "All secrets should be stored securely using credential management systems.",
-    },
-    {
-      id: "R5",
-      name: "dead_ends",
-      severity: "should",
-      description: "Finds nodes or workflow branches not connected to any other node.",
-      details: "Indicates incomplete or dead logic that should be reviewed or removed.",
-    },
-    {
-      id: "R6",
-      name: "long_running",
-      severity: "should",
-      description: "Flags workflows with potential for excessive runtime.",
-      details: "Detects loops with high iteration counts or long timeouts.",
-    },
-    {
-      id: "R7",
-      name: "alert_log_enforcement",
-      severity: "should",
-      description: "Ensures critical paths include logging or alerting steps.",
-      details: "Failed critical operations should trigger an alert for monitoring.",
-    },
-    {
-      id: "R8",
-      name: "unused_data",
-      severity: "nit",
-      description: "Detects when node output data is not consumed by subsequent nodes.",
-      details: "Identifies unnecessary data processing that could be optimized.",
-    },
-    {
-      id: "R9",
-      name: "config_literals",
-      severity: "should",
-      description: "Flags hardcoded literals that should come from configuration.",
-      details: "Promotes externalized configuration and prevents hardcoded environment values.",
-    },
-    {
-      id: "R10",
-      name: "naming_convention",
-      severity: "nit",
-      description: "Enforces consistent and descriptive naming for nodes.",
-      details: "Improves workflow readability (e.g., 'Fetch Customer' vs 'HTTP Request').",
-    },
-    {
-      id: "R11",
-      name: "deprecated_nodes",
-      severity: "should",
-      description: "Warns about deprecated node types and suggests alternatives.",
-      details: "Helps maintain workflows using current, supported node implementations.",
-    },
-    {
-      id: "R12",
-      name: "unhandled_error_path",
-      severity: "must",
-      description: "Ensures nodes with error outputs have connected error handling branches.",
-      details: "Prevents silent failures by requiring explicit error path handling.",
-    },
-    {
-      id: "R13",
-      name: "webhook_acknowledgment",
-      severity: "must",
-      description: "Detects webhooks performing heavy processing without immediate acknowledgment.",
-      details: "Prevents timeout and duplicate events by requiring early response.",
-    },
-    {
-      id: "R14",
-      name: "retry_after_compliance",
-      severity: "should",
-      description: "Detects HTTP nodes with retry logic that ignore Retry-After headers.",
-      details: "Respecting server guidance prevents IP blocking and extended backoffs.",
-    },
-  ];
-
-  const Nav = ({ className, onSelect }: { className?: string; onSelect?: () => void }) => (
+const Nav = ({ className, onSelect, activeSection, setActiveSection, sidebarItems }: NavProps) => {
+  return (
     <nav className={cn("space-y-6", className)}>
       {sidebarItems.map((group) => (
         <div key={group.title}>
@@ -219,6 +114,45 @@ const Documentation = () => {
       ))}
     </nav>
   );
+};
+
+const Documentation = () => {
+  const [activeSection, setActiveSection] = useState("overview");
+
+  const sidebarItems = [
+    {
+      title: "Getting Started",
+      items: [
+        { id: "overview", label: "Overview", icon: BookOpen },
+        { id: "configuration", label: "Configuration", icon: Settings },
+      ]
+    },
+    {
+      title: "Platforms",
+      items: [
+        { id: "chrome", label: "Chrome Extension", icon: Chrome },
+        { id: "cli", label: "CLI Tool", icon: Terminal },
+        { id: "github", label: "GitHub App", icon: GitPullRequest },
+      ]
+    }
+  ];
+
+  // Dynamically add Rules section if there are rules
+  if (Object.keys(ruleExamples).length > 0) {
+    sidebarItems.push({
+      title: "Reference",
+      items: [
+        { id: "rules", label: "Rules", icon: ShieldCheck },
+      ]
+    });
+  }
+
+  // Sort rules numerically (R1, R2, ..., R10)
+  const implementedRules = Object.values(ruleExamples).sort((a, b) => {
+    const numA = parseInt(a.id.substring(1), 10);
+    const numB = parseInt(b.id.substring(1), 10);
+    return numA - numB;
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -237,7 +171,7 @@ const Documentation = () => {
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-6">
                 <div className="font-bold text-lg mb-6">Documentation</div>
-                <Nav />
+                <Nav activeSection={activeSection} setActiveSection={setActiveSection} sidebarItems={sidebarItems} onSelect={() => {}} />
               </SheetContent>
             </Sheet>
           </div>
@@ -245,7 +179,7 @@ const Documentation = () => {
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-24">
-              <Nav />
+              <Nav activeSection={activeSection} setActiveSection={setActiveSection} sidebarItems={sidebarItems} />
             </div>
           </aside>
 
@@ -482,8 +416,7 @@ rules:
 
                 <div className="space-y-6">
                   {implementedRules.map((rule) => {
-                    const example = ruleExamples[rule.id];
-                    
+                    // rule object now contains both metadata and examples content
                     return (
                       <Card key={rule.name} id={rule.name} className="scroll-mt-24">
                         <CardHeader>
@@ -517,8 +450,7 @@ rules:
                                     <DialogTitle className="text-2xl font-mono">{rule.id}: {rule.name}</DialogTitle>
                                   </DialogHeader>
                                   
-                                  {example ? (
-                                    <Tabs defaultValue="readme" className="flex-1 flex flex-col min-h-0">
+                                  <Tabs defaultValue="readme" className="flex-1 flex flex-col min-h-0">
                                       <div className="px-6">
                                         <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-6">
                                           <TabsTrigger 
@@ -547,8 +479,7 @@ rules:
                                           <div className="prose dark:prose-invert max-w-none prose-sm prose-pre:bg-transparent prose-pre:p-0">
                                             <ReactMarkdown
                                               components={{
-                                                code(props) {
-                                                  const {node, className, children, ...rest} = props
+                                                code({node, className, children, ...props}: React.HTMLAttributes<HTMLElement> & {node: Node, inline: boolean, className: string, children: React.ReactNode[]}) {
                                                   const match = /language-(\w+)/.exec(className || '')
                                                   const isMermaid = match && match[1] === 'mermaid';
                                                   
@@ -557,12 +488,12 @@ rules:
                                                   }
                                                   
                                                   return !match ? (
-                                                    <code className={className} {...rest}>
+                                                    <code className={className} {...props}>
                                                       {children}
                                                     </code>
                                                   ) : (
                                                     <div className="bg-muted p-4 rounded-md my-4">
-                                                      <code className={className} {...rest}>
+                                                      <code className={className} {...props}>
                                                         {children}
                                                       </code>
                                                     </div>
@@ -570,23 +501,18 @@ rules:
                                                 }
                                               }}
                                             >
-                                              {example.readme}
+                                              {rule.readme}
                                             </ReactMarkdown>
                                           </div>
                                         </TabsContent>
                                         <TabsContent value="good" className="m-0 h-full">
-                                           <CodeBlockWithCopy code={example.good} language="json" />
+                                           <CodeBlockWithCopy code={rule.good} language="json" />
                                         </TabsContent>
                                         <TabsContent value="bad" className="m-0 h-full">
-                                           <CodeBlockWithCopy code={example.bad} language="json" />
+                                           <CodeBlockWithCopy code={rule.bad} language="json" />
                                         </TabsContent>
                                       </div>
                                     </Tabs>
-                                  ) : (
-                                    <div className="flex items-center justify-center h-full text-muted-foreground p-6">
-                                      Examples are not yet available for this rule in the documentation cache.
-                                    </div>
-                                  )}
                                 </DialogContent>
                               </Dialog>
                             </div>
