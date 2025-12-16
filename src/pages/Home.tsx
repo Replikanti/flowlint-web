@@ -36,7 +36,7 @@ const Home = () => {
       variant: "outline" as const
     },
     {
-      title: "Web Validator",
+      title: "Web Linter",
       icon: Globe,
       description: "Quick online checker. Copy & paste your workflow JSON to validate instantly without installation.",
       link: "https://app.flowlint.dev",

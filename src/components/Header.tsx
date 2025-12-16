@@ -50,7 +50,7 @@ const Header = () => {
       icon: GitPullRequest,
     },
     {
-      title: "Web Validator",
+      title: "Web Linter",
       href: "https://app.flowlint.dev",
       description: "Online linter for quick checks (Alpha).",
       icon: Globe,
@@ -168,7 +168,7 @@ const Header = () => {
 
             <Button asChild variant="default" size="sm" className="hidden lg:flex bg-primary hover:bg-primary/90 text-white border-0">
               <a href="https://app.flowlint.dev" target="_blank" rel="noopener noreferrer">
-                Try Web Validator <Badge variant="secondary" className="ml-2 text-[10px] h-5 px-1.5 bg-white/20 text-white">NEW</Badge>
+                Try Web Linter <Badge variant="secondary" className="ml-2 text-[10px] h-5 px-1.5 bg-white/20 text-white">NEW</Badge>
               </a>
             </Button>
           </div>
