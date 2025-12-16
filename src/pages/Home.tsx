@@ -39,9 +39,9 @@ const Home = () => {
       title: "Web Validator",
       icon: Globe,
       description: "Quick online checker. Copy & paste your workflow JSON to validate instantly without installation.",
-      link: "/roadmap", // Linking to roadmap as it is in progress
-      cta: "Coming Soon",
-      external: false,
+      link: "https://app.flowlint.dev",
+      cta: "Start Linting",
+      external: true,
       variant: "secondary" as const
     }
   ];
@@ -224,6 +224,12 @@ const Home = () => {
                    <a href="https://github.com/Replikanti/flowlint-github-app/tree/main" target="_blank" rel="noopener noreferrer">
                       <GitPullRequest className="mr-2 h-4 w-4" />
                       GitHub App
+                   </a>
+                </Button>
+                <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" asChild>
+                   <a href="https://github.com/Replikanti/flowlint-weblinter/tree/main" target="_blank" rel="noopener noreferrer">
+                      <Globe className="mr-2 h-4 w-4" />
+                      Web Linter
                    </a>
                 </Button>
              </div>

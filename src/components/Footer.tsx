@@ -14,7 +14,7 @@ const Footer = () => {
     product: [
       { name: "Documentation", href: "/doc" },
       { name: "Roadmap", href: "/roadmap" },
-      { name: "Web Validator", href: "/roadmap" },
+      { name: "Web Validator", href: "https://app.flowlint.dev" },
       { name: "GitHub App", href: "/github-app" },
       { name: "CLI", href: "/cli" },
       { name: "Chrome Extension", href: "/chrome-extension" },
@@ -24,6 +24,7 @@ const Footer = () => {
       { name: "flowlint-cli", href: "https://github.com/Replikanti/flowlint-cli/tree/main" },
       { name: "flowlint-chrome", href: "https://github.com/Replikanti/flowlint-chrome/tree/main" },
       { name: "flowlint-github-app", href: "https://github.com/Replikanti/flowlint-github-app/tree/main" },
+      { name: "flowlint-weblinter", href: "https://github.com/Replikanti/flowlint-weblinter/tree/main" },
     ],
     company: [
       { name: "About", href: "/" },
