@@ -166,21 +166,11 @@ const Header = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <Button asChild variant="default" size="sm" className="hidden lg:flex bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white border-0">
+            <Button asChild variant="default" size="sm" className="hidden lg:flex bg-primary hover:bg-primary/90 text-white border-0">
               <a href="https://app.flowlint.dev" target="_blank" rel="noopener noreferrer">
-                Try Web Validator
+                Try Web Validator <Badge variant="secondary" className="ml-2 text-[10px] h-5 px-1.5 bg-white/20 text-white">NEW</Badge>
               </a>
             </Button>
-
-            <a
-              href="https://github.com/Replikanti/flowlint"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}
-            >
-              <Github className="h-4 w-4" />
-              GitHub
-            </a>
           </div>
 
           {/* Mobile Navigation */}
