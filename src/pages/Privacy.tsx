@@ -11,7 +11,7 @@ const Privacy = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
-            <p className="text-muted-foreground">Last updated: December 13, 2025</p>
+            <p className="text-muted-foreground">Last updated: December 16, 2025</p>
           </div>
 
           <div className="space-y-6">
@@ -23,7 +23,7 @@ const Privacy = () => {
                 <p>
                   FlowLint ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains 
                   how we collect, use, and safeguard information when you use our suite of tools: the FlowLint GitHub App, 
-                  CLI Tool, Chrome Extension, and Website.
+                  CLI Tool, Chrome Extension, and Web Linter.
                 </p>
               </CardContent>
             </Card>
@@ -57,9 +57,9 @@ const Privacy = () => {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-foreground mb-2">3. Web Validator (Online Linter)</h3>
+                  <h3 className="font-semibold text-foreground mb-2">3. Web Linter</h3>
                   <p>
-                    The online validator runs entirely in your browser using client-side JavaScript. 
+                    The online Web Linter runs entirely in your browser using client-side JavaScript. 
                     Data you paste into the validator is not sent to any backend server and is cleared when you close the tab.
                   </p>
                 </div>

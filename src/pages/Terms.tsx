@@ -11,7 +11,7 @@ const Terms = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-4">Terms of Service</h1>
-            <p className="text-muted-foreground">Last updated: December 13, 2025</p>
+            <p className="text-muted-foreground">Last updated: December 16, 2025</p>
           </div>
 
           <div className="space-y-6">
@@ -21,7 +21,7 @@ const Terms = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  By installing, accessing, or using any part of the FlowLint suite (GitHub App, CLI, Chrome Extension, Website), 
+                  By installing, accessing, or using any part of the FlowLint suite (GitHub App, CLI, Chrome Extension, Web Linter), 
                   you agree to be bound by these Terms of Service.
                 </p>
               </CardContent>
@@ -39,7 +39,7 @@ const Terms = () => {
                   <li><strong>GitHub App:</strong> Server-side analysis of Pull Requests.</li>
                   <li><strong>CLI Tool:</strong> Local analysis via command line.</li>
                   <li><strong>Chrome Extension:</strong> Browser-based analysis within the n8n editor.</li>
-                  <li><strong>Web Validator:</strong> Online analysis tool.</li>
+                  <li><strong>Web Linter:</strong> Online analysis tool.</li>
                 </ul>
               </CardContent>
             </Card>
