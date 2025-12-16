@@ -14,7 +14,7 @@ const Footer = () => {
     product: [
       { name: "Documentation", href: "/doc" },
       { name: "Roadmap", href: "/roadmap" },
-      { name: "Web Validator", href: "https://app.flowlint.dev" },
+      { name: "Web Linter", href: "https://app.flowlint.dev" },
       { name: "GitHub App", href: "/github-app" },
       { name: "CLI", href: "/cli" },
       { name: "Chrome Extension", href: "/chrome-extension" },
