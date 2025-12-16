@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { GitPullRequest, CheckCircle2, ShieldCheck, Zap, AlertTriangle, Code2 } from "lucide-react";
+import { GitPullRequest, CheckCircle2, ShieldCheck, Code2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const GitHubApp = () => {

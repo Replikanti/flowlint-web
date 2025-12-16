@@ -43,6 +43,44 @@ interface RuleExample {
 
 const ruleExamples = ruleExamplesData as Record<string, RuleExample>;
 
+// Helper function to determine badge variant based on severity
+const getSeverityBadgeVariant = (severity: RuleExample['severity']): "destructive" | "secondary" | "outline" => {
+  if (severity === "must") return "destructive";
+  if (severity === "should") return "secondary";
+  return "outline";
+};
+
+// Custom code renderer for ReactMarkdown
+const CustomCodeBlock = ({
+  node,
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLElement> & { node: Node; inline: boolean; className: string; children: React.ReactNode[] }) => {
+  const match = /language-(\w+)/.exec(className || '');
+  const isMermaid = match?.[1] === 'mermaid';
+
+  if (isMermaid) {
+    return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+  }
+
+  if (match) {
+    return (
+      <div className="bg-muted p-4 rounded-md my-4">
+        <code className={className} {...props}>
+          {children}
+        </code>
+      </div>
+    );
+  }
+
+  return (
+    <code className={className} {...props}>
+      {children}
+    </code>
+  );
+};
+
 const CodeBlockWithCopy = ({ code, language }: { code: string; language: string }) => {
   const [copied, setCopied] = useState(false);
 
@@ -149,8 +187,8 @@ const Documentation = () => {
 
   // Sort rules numerically (R1, R2, ..., R10)
   const implementedRules = Object.values(ruleExamples).sort((a, b) => {
-    const numA = parseInt(a.id.substring(1), 10);
-    const numB = parseInt(b.id.substring(1), 10);
+    const numA = Number.parseInt(a.id.slice(1), 10);
+    const numB = Number.parseInt(b.id.slice(1), 10);
     return numA - numB;
   });
 
@@ -431,10 +469,7 @@ rules:
                               <CardDescription className="text-base">{rule.description}</CardDescription>
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
-                              <Badge variant={
-                                rule.severity === "must" ? "destructive" : 
-                                rule.severity === "should" ? "secondary" : "outline"
-                              }>
+                              <Badge variant={getSeverityBadgeVariant(rule.severity)}>
                                 {rule.severity}
                               </Badge>
                               
@@ -479,26 +514,7 @@ rules:
                                           <div className="prose dark:prose-invert max-w-none prose-sm prose-pre:bg-transparent prose-pre:p-0">
                                             <ReactMarkdown
                                               components={{
-                                                code({node, className, children, ...props}: React.HTMLAttributes<HTMLElement> & {node: Node, inline: boolean, className: string, children: React.ReactNode[]}) {
-                                                  const match = /language-(\w+)/.exec(className || '')
-                                                  const isMermaid = match && match[1] === 'mermaid';
-                                                  
-                                                  if (isMermaid) {
-                                                    return <Mermaid chart={String(children).replace(/\n$/, '')} />
-                                                  }
-                                                  
-                                                  return !match ? (
-                                                    <code className={className} {...props}>
-                                                      {children}
-                                                    </code>
-                                                  ) : (
-                                                    <div className="bg-muted p-4 rounded-md my-4">
-                                                      <code className={className} {...props}>
-                                                        {children}
-                                                      </code>
-                                                    </div>
-                                                  )
-                                                }
+                                                code: CustomCodeBlock
                                               }}
                                             >
                                               {rule.readme}
