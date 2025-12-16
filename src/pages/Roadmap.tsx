@@ -101,9 +101,10 @@ const Roadmap = () => {
             {roadmapData.map((section, sectionIndex) => {
               const config = getStatusConfig(section.status);
               const StatusIcon = config.icon;
+              const sectionKey = `${section.status}-${section.quarter || 'no-quarter'}`;
 
               return (
-                <div key={sectionIndex} className="relative">
+                <div key={sectionKey} className="relative">
                   {/* Timeline connector line (not for last item) */}
                   {sectionIndex < roadmapData.length - 1 && (
                     <div
@@ -133,9 +134,9 @@ const Roadmap = () => {
 
                   {/* Items Grid */}
                   <div className="md:pl-20 grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
-                    {section.items.map((item, itemIndex) => (
+                    {section.items.map((item) => (
                       <Card
-                        key={itemIndex}
+                        key={item.title}
                         className={`transition-all hover:shadow-md ${
                           section.status === "shipped" ? "opacity-90" : ""
                         }`}

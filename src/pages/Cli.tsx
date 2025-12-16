@@ -521,7 +521,7 @@ steps:
                   Catch issues locally before committing changes to version control.
                 </p>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>{`# .pre-commit-config.yaml
+                  <pre>{String.raw`# .pre-commit-config.yaml
 repos:
   - repo: local
     hooks:
@@ -529,7 +529,7 @@ repos:
         name: FlowLint
         entry: flowlint scan --fail-on-error
         language: system
-        files: '\\.(json|yaml|yml)$'
+        files: \.(json|yaml|yml)$
         stages: [commit]`}</pre>
                 </div>
               </div>
