@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Chrome, Code2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Github, Chrome } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const NpmIcon = () => (

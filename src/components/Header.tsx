@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -21,14 +21,12 @@ import {
   BookOpen, 
   Map, 
   LifeBuoy,
-  Code2,
-  Github
+  Code2
 } from "lucide-react";
 import logo from "@/assets/logo.png";
 import React from "react";
 
 const Header = () => {
-  const location = useLocation();
 
   const products = [
     {
