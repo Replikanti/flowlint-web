@@ -35,6 +35,10 @@
         {
           "title": "Suppression Mechanism",
           "description": "Allow developers to suppress specific findings with inline comments (flowlint-disable) similar to ESLint."
+        },
+        {
+          "title": "Interactive Visual Linter 2.0",
+          "description": "We are taking the Web Linter to the next level. Instead of just seeing a list of errors, you will see your entire n8n workflow visualized as an interactive map. You can click on individual nodes to pinpoint exactly where issues are, making it incredibly easy to understand and fix problems. Plus, you'll be able to share these interactive reports with your team simply by sending a link."
         }
       ]
     },
