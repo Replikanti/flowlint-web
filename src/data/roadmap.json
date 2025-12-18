@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-17",
+  "lastUpdated": "2025-12-18",
   "sections": [
     {
       "status": "shipped",
@@ -28,6 +28,17 @@
       ]
     },
     {
+      "status": "in-progress",
+      "title": "In Progress",
+      "quarter": "Q1 2026",
+      "items": [
+        {
+          "title": "Interactive Visual Linter 2.0",
+          "description": "Next generation of our web interface featuring: 1) URL-based Sharing: share analysis results via links, 2) Privacy-First: 100% client-side processing, 3) Instant Feedback: drag & drop for immediate results, 4) Zero Configuration: works out of the box."
+        }
+      ]
+    },
+    {
       "status": "planned",
       "title": "Coming Soon",
       "quarter": "Q1 2026",
@@ -35,10 +46,6 @@
         {
           "title": "Suppression Mechanism",
           "description": "Allow developers to suppress specific findings with inline comments (flowlint-disable) similar to ESLint."
-        },
-        {
-          "title": "Interactive Visual Linter 2.0",
-          "description": "We are taking the Web Linter to the next level. Instead of just seeing a list of errors, you will see your entire n8n workflow visualized as an interactive map. You can click on individual nodes to pinpoint exactly where issues are, making it incredibly easy to understand and fix problems. Plus, you'll be able to share these interactive reports with your team simply by sending a link."
         }
       ]
     },
