@@ -9,16 +9,17 @@ import { Chrome, Terminal, GitPullRequest, ArrowRight, Globe } from "lucide-reac
 const Onboarding = () => {
   const products = [
     {
-      title: "Chrome Extension",
-      icon: Chrome,
-      description: "Best for individual developers. Get real-time feedback directly inside the n8n editor as you build.",
-      benefits: ["Real-time analysis", "No setup required", "Works offline", "Privacy-first"],
+      title: "Web Linter",
+      icon: Globe,
+      description: "Quick online check. Paste your workflow JSON to validate instantly without installation.",
+      benefits: ["Instant check", "No installation", "Share results"],
+      badge: "New",
       action: {
-        label: "Add to Chrome",
-        href: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli",
+        label: "Try Web Linter",
+        href: "https://app.flowlint.dev",
         external: true
       },
-      recommended: true
+      userFriendly: true
     },
     {
       title: "CLI Tool",
@@ -43,17 +44,16 @@ const Onboarding = () => {
       }
     },
     {
-      title: "Web Validator",
-      icon: Globe,
-      description: "Quick online check. Paste your workflow JSON to validate instantly without installation.",
-      benefits: ["Instant check", "No installation", "Share results"],
-      badge: "Coming Soon",
+      title: "Chrome Extension",
+      icon: Chrome,
+      description: "Best for individual developers. Get real-time feedback directly inside the n8n editor as you build.",
+      benefits: ["Real-time analysis", "No setup required", "Works offline", "Privacy-first"],
       action: {
-        label: "Check Roadmap",
-        href: "/roadmap", 
-        external: false,
-        disabled: false // Let them click to see roadmap
-      }
+        label: "Add to Chrome",
+        href: "https://chromewebstore.google.com/detail/flowlint-n8n-workflow-aud/ldefjlphmcjfccmofakmebddlecbieli",
+        external: true
+      },
+      recommended: true
     }
   ];
 
@@ -71,10 +71,15 @@ const Onboarding = () => {
 
           <div className="grid md:grid-cols-2 gap-8">
              {products.map((product) => (
-                <Card key={product.title} className={`flex flex-col relative ${product.recommended ? 'border-primary ring-1 ring-primary/20 shadow-lg' : ''}`}>
+                <Card key={product.title} className={`flex flex-col relative ${product.recommended || product.userFriendly ? 'border-primary ring-1 ring-primary/20 shadow-lg' : ''}`}>
                    {product.recommended && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                          <Badge>Recommended Start</Badge>
+                      </div>
+                   )}
+                   {product.userFriendly && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                         <Badge>User Friendly</Badge>
                       </div>
                    )}
                    <CardHeader>
