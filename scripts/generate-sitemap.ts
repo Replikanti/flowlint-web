@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 const BASE_URL = 'https://flowlint.dev';
 const OUT_FILE = path.join(process.cwd(), 'public', 'sitemap.xml');
@@ -16,8 +16,7 @@ const routes = [
   '/tos',
 ];
 
-const generateSitemap = async () => {
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${routes
     .map((route) => {
@@ -32,8 +31,5 @@ const generateSitemap = async () => {
     .join('')}
 </urlset>`;
 
-  await fs.writeFile(OUT_FILE, sitemap.trim(), 'utf-8');
-  console.log(`Sitemap generated at ${OUT_FILE}`);
-};
-
-generateSitemap().catch(console.error);
+await fs.writeFile(OUT_FILE, sitemap.trim(), 'utf-8');
+console.log(`Sitemap generated at ${OUT_FILE}`);

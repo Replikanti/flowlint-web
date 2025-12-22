@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { Octokit } from '@octokit/rest';
 import { RULES_METADATA, type RuleMetadata } from '@replikanti/flowlint-core';
 
@@ -34,39 +34,32 @@ async function fetchFileContent(ruleId: string, filename: string): Promise<strin
   }
 }
 
-async function main() {
-  console.log('Fetching rule examples from GitHub...');
-  
-  // Use metadata from core as the source of truth for rules
-  const rules = RULES_METADATA;
-  console.log(`Found ${rules.length} rules defined in core.`);
+console.log('Fetching rule examples from GitHub...');
 
-  const data: Record<string, RuleExample> = {};
+// Use metadata from core as the source of truth for rules
+const rules = RULES_METADATA;
+console.log(`Found ${rules.length} rules defined in core.`);
 
-  for (const rule of rules) {
-    console.log(`Processing ${rule.id} (${rule.name})...`);
-    const [readme, good, bad] = await Promise.all([
-      fetchFileContent(rule.id, 'README.md'),
-      fetchFileContent(rule.id, 'good-example.json'),
-      fetchFileContent(rule.id, 'bad-example.json'),
-    ]);
+const data: Record<string, RuleExample> = {};
 
-    data[rule.id] = {
-      ...rule,
-      readme,
-      good,
-      bad
-    };
-  }
+for (const rule of rules) {
+  console.log(`Processing ${rule.id} (${rule.name})...`);
+  const [readme, good, bad] = await Promise.all([
+    fetchFileContent(rule.id, 'README.md'),
+    fetchFileContent(rule.id, 'good-example.json'),
+    fetchFileContent(rule.id, 'bad-example.json'),
+  ]);
 
-  // Ensure directory exists
-  await fs.mkdir(path.dirname(OUT_FILE), { recursive: true });
-  
-  await fs.writeFile(OUT_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  console.log(`Examples saved to ${OUT_FILE}`);
+  data[rule.id] = {
+    ...rule,
+    readme,
+    good,
+    bad
+  };
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+// Ensure directory exists
+await fs.mkdir(path.dirname(OUT_FILE), { recursive: true });
+
+await fs.writeFile(OUT_FILE, JSON.stringify(data, null, 2), 'utf-8');
+console.log(`Examples saved to ${OUT_FILE}`);
