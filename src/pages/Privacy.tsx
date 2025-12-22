@@ -120,7 +120,7 @@ const Privacy = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  FlowLint's use and transfer to any other app of information received from Google APIs will adhere to 
+                  FlowLint's use and transfer to any other app of information received from Google APIs will adhere to{" "}
                   <a href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes" className="text-primary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
                     Google API Services User Data Policy
                   </a>, including the Limited Use requirements.
@@ -142,7 +142,8 @@ const Privacy = () => {
                   most "deletion" is achieved simply by uninstalling our App/Extension.
                 </p>
                 <p>
-                  For specific requests, please contact us via our <a href="/support" className="text-primary hover:underline">Support Center</a> or 
+                  For specific requests, please contact us via our{" "}
+                  <a href="/support" className="text-primary hover:underline">Support Center</a> or{" "}
                   email us directly at <strong>ylohnitram@gmail.com</strong>.
                 </p>
               </CardContent>
