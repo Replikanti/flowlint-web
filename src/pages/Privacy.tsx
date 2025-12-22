@@ -116,6 +116,24 @@ const Privacy = () => {
 
             <Card>
               <CardHeader>
+                <CardTitle>Google API Data Disclosure</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-muted-foreground">
+                <p>
+                  FlowLint's use and transfer to any other app of information received from Google APIs will adhere to 
+                  <a href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes" className="text-primary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+                    Google API Services User Data Policy
+                  </a>, including the Limited Use requirements.
+                </p>
+                <p>
+                  Our Chrome Extension only accesses data necessary to provide its linting functionality within the n8n editor. 
+                  We do not share your Google user data with any third-party tools or AI models.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Your Rights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
@@ -124,7 +142,8 @@ const Privacy = () => {
                   most "deletion" is achieved simply by uninstalling our App/Extension.
                 </p>
                 <p>
-                  For specific requests, please contact us via our <a href="/support" className="text-primary hover:underline">Support Center</a>.
+                  For specific requests, please contact us via our <a href="/support" className="text-primary hover:underline">Support Center</a> or 
+                  email us directly at <strong>ylohnitram@gmail.com</strong>.
                 </p>
               </CardContent>
             </Card>
