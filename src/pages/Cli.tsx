@@ -18,7 +18,7 @@ const Cli = () => {
               FlowLint CLI
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Local static analysis tool for n8n workflows. Validate your workflows before pushing to GitHub.
+              Local static analysis tool for n8n workflows. Validate your workflow files or directories before pushing to GitHub.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
@@ -148,6 +148,13 @@ const Cli = () => {
                 <h3 className="font-semibold mb-3">Scan specific directory</h3>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
                   <pre>flowlint scan ./workflows</pre>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-3">Scan single workflow file</h3>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>flowlint scan ./workflows/payment-flow.n8n.json</pre>
                 </div>
               </div>
 
@@ -521,16 +528,34 @@ steps:
                   Catch issues locally before committing changes to version control.
                 </p>
                 <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                  <pre>{String.raw`# .pre-commit-config.yaml
-repos:
-  - repo: local
-    hooks:
-      - id: flowlint
-        name: FlowLint
-        entry: flowlint scan --fail-on-error
-        language: system
-        files: \.(json|yaml|yml)$
-        stages: [commit]`}</pre>
+                  <pre>{`# Scan only staged n8n files
+git diff --cached --name-only | grep '\\.n8n\\.json$' | xargs -I {} flowlint scan {}`}</pre>
+                </div>
+              </div>
+
+              {/* GitHub Actions - Incremental PR Scanning */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Github className="w-5 h-5" />
+                  <h3 className="text-lg font-semibold">GitHub Actions - Incremental PR Scanning</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Scan only changed files in a Pull Request to save time.
+                </p>
+                <div className="bg-slate-900 text-slate-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                  <pre>{`# GitHub Actions - Scan only changed files in PR
+- name: Get changed n8n files
+  id: changed-files
+  uses: tj-actions/changed-files@v40
+  with:
+    files: '**/*.n8n.json'
+
+- name: Scan changed files
+  if: steps.changed-files.outputs.any_changed == 'true'
+  run: |
+    for file in \${{ steps.changed-files.outputs.all_changed_files }}; do
+      flowlint scan "$file"
+    done`}</pre>
                 </div>
               </div>
             </CardContent>
