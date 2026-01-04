@@ -1,6 +1,16 @@
 {
-  "lastUpdated": "2025-12-19",
+  "lastUpdated": "2026-01-05",
   "sections": [
+    {
+      "status": "in-progress",
+      "title": "In Progress",
+      "items": [
+        {
+          "title": "Chrome Extension UX Improvements",
+          "description": "Based on user feedback: collapsible export panel, expanded full-screen error view, MVP mode toggle to pause linting, severity-based error filtering, and repositionable widget button."
+        }
+      ]
+    },
     {
       "status": "shipped",
       "title": "Shipped Features",
