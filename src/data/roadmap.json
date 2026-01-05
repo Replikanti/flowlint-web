@@ -32,15 +32,14 @@
           "description": "Complete command-line interface with scan command, multiple output formats (stylish, JSON, SARIF, JUnit XML, GitHub Actions), config file support, and comprehensive CI/CD integration examples for GitHub Actions, GitLab CI, Jenkins, CircleCI, and Azure Pipelines."
         },
         {
-          "title": "Chrome Extension",
-          "description": "Real-time static analysis within the n8n editor in your browser, providing instant feedback for your workflows."
+          "title": "Chrome Extension with UX/UI 2.0",
+          "description": "Real-time static analysis within the n8n editor featuring: 1) Expanded View mode with keyboard navigation (Escape to close, Ctrl+E toggle), 2) Rule Configuration for enabling/disabling specific rules, 3) First-run Onboarding Guide, 4) Export Results in multiple formats (Text, JSON, CSV, SARIF, JUnit), 5) Rules Warning indicator showing skipped rules."
         }
       ]
     },
     {
-      "status": "planned",
-      "title": "Coming Soon",
-      "quarter": "Q1 2026",
+      "status": "in-progress",
+      "title": "In Progress",
       "items": [
         {
           "title": "Suppression Mechanism",
