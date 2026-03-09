@@ -6,7 +6,7 @@
       "title": "Shipped Features",
       "items": [
         {
-          "title": "R1-R14 Lint Rules",
+          "title": "R1-R15 Lint Rules",
           "description": "Complete set of 14 production-ready linting rules for n8n workflows, covering rate limiting, error handling, secrets detection, webhook acknowledgment, Retry-After compliance, and more."
         },
         {
