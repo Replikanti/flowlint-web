@@ -261,7 +261,7 @@ const Documentation = () => {
                 <div>
                   <h2 className="text-2xl font-bold mb-4">How it Works</h2>
                   <p className="text-muted-foreground mb-4">
-                    FlowLint parses the JSON structure of your n8n workflows and applies a set of rules (R1-R14).
+                    FlowLint parses the JSON structure of your n8n workflows and applies a set of rules (R1-R15).
                     You can run it in three ways:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
