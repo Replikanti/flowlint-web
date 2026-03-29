@@ -87,7 +87,7 @@
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "lovable-tagger": "1.1.13",
-    "openai": "6.32.0",
+    "openai": "6.33.0",
     "postcss": "8.5.8",
     "tailwindcss": "4.2.2",
     "typescript": "5.9.3",
